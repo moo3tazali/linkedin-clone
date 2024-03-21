@@ -1,0 +1,18 @@
+export const AuthFormClasses = {
+  box: "min-h-screen flex items-center justify-center flex-col gap-5 w-full dark:bg-gray-950",
+
+  label: "block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2",
+
+  input:
+    "shadow-sm rounded-md w-full px-3 py-2 border border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500",
+
+  checkbox:
+    "h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500 focus:outline-none",
+
+  p: "text-xs text-gray-600 hover:text-indigo-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 text-center mt-5",
+
+  button:
+    "w-full flex justify-center items-center gap-3 py-3 px-4 border border-transparent rounded-full shadow-sm font-medium text-white bg-primary hover:bg-blue-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500",
+
+  span: "text-indigo-500 hover:text-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 font-semibold",
+};

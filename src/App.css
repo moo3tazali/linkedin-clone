@@ -1,0 +1,14 @@
+.active {
+  border-bottom: 2px solid #191919 !important;
+  color: #191919 !important;
+}
+
+.gold-icon::before {
+  content: "";
+  position: absolute;
+  border: 7px solid;
+  border-color: #f8c77e #f8c77e #e7a33e #e7a33e;
+  border-radius: 3px;
+  top: 4px;
+  left: 15px;
+}

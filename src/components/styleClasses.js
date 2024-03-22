@@ -16,3 +16,15 @@ export const AuthFormClasses = {
 
   span: "text-indigo-500 hover:text-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 font-semibold",
 };
+
+export const PostsClasses = {
+  button:
+    "flex items-center space-x-1 text-secondary hover:bg-background px-6 py-3 rounded-md text-sm font-[500]",
+  postBox:
+    "bg-white rounded-lg shadow-sm max-w-xl mx-auto my-4 border border-gray-200",
+};
+
+export const StartNewPostClasses = {
+  icons:
+    "flex items-center gap-2 py-3 px-2 w-fit rounded cursor-pointer transition-all duration-300 hover:bg-background",
+};

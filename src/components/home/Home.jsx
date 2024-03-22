@@ -1,5 +1,5 @@
 import Sidebar from "./Sidebar";
-import Feeds from "./Feeds";
+import Feeds from "./posts/Feeds";
 import Widgets from "./Widgets";
 import Header from "../header/Header";
 

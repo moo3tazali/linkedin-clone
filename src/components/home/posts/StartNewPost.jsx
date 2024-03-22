@@ -1,9 +1,13 @@
-import { Avatar } from "@mui/material";
-import NewPostDialog from "./NewPostDialog";
-import MmsIcon from "@mui/icons-material/Mms";
-import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
-import NewspaperIcon from "@mui/icons-material/Newspaper";
 import { useEffect, useState } from "react";
+import NewPostDialog from "./NewPostDialog.jsx";
+import { StartNewPostClasses } from "../../styleClasses.js";
+import { getUserData } from "../../getUserData.js";
+import {
+  Avatar,
+  MmsIcon,
+  CalendarMonthIcon,
+  NewspaperIcon,
+} from "../../../import.js";
 
 const StartNewPost = () => {
   const [user, setUser] = useState({
@@ -11,6 +15,17 @@ const StartNewPost = () => {
     avatar: "/static/images/avatar/1.jpg",
   });
 
+  useEffect(() => {
+    getUserData().then((data) => {
+      const fullName = data.fullName;
+      const profilePic = data.profilePic.url;
+      setUser({
+        ...user,
+        name: fullName,
+        avatar: profilePic,
+      });
+    });
+  }, []);
 
   return (
     <div className="bg-white p-3 rounded-lg shadow border border-gray-200">
@@ -24,15 +39,15 @@ const StartNewPost = () => {
         <NewPostDialog />
       </div>
       <div className="mt-1 flex justify-between items-center">
-        <div className="flex items-center gap-2 py-3 px-2 w-fit rounded cursor-pointer transition-all duration-300 hover:bg-background">
+        <div className={StartNewPostClasses.icons}>
           <MmsIcon className="text-primary" />
           <span className="text-secondary font-semibold text-sm">Media</span>
         </div>
-        <div className="flex items-center gap-2 py-3 px-2 w-fit rounded cursor-pointer transition-all duration-300 hover:bg-background">
+        <div className={StartNewPostClasses.icons}>
           <CalendarMonthIcon className="text-[#C37D16]" />
           <span className="text-secondary font-semibold text-sm">Event</span>
         </div>
-        <div className="flex items-center gap-2 py-3 px-2 w-fit rounded cursor-pointer transition-all duration-300 hover:bg-background">
+        <div className={StartNewPostClasses.icons}>
           <NewspaperIcon className="text-[#E06847]" />
           <span className="text-secondary font-semibold text-sm">
             Write article

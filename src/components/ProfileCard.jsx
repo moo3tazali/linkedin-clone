@@ -1,18 +1,34 @@
 import { Avatar } from "@mui/material";
-import cover from "../assets/cover-pic.png";
-import { useEffect, useState } from "react";
+import { useState, useEffect } from "react";
+import { getUserData } from "../components/getUserData.js";
 
 const ProfileCard = () => {
   const [user, setUser] = useState({
     name: "",
+    title: "",
+    cover: "",
     avatar: "/static/images/avatar/1.jpg",
   });
 
-
+  useEffect(() => {
+    getUserData().then((data) => {
+      const fullName = data.fullName;
+      const title = data.title;
+      const profilePic = data.profilePic.url;
+      const coverPic = data.coverPic.url;
+      setUser({
+        ...user,
+        name: fullName,
+        title: title,
+        cover: coverPic,
+        avatar: profilePic,
+      });
+    });
+  }, []);
 
   return (
     <div className="card bg-white rounded-t-lg w-full overflow-hidden border border-gray-200 sm:border-b-0 shadow">
-      <img src={cover} alt="cover" className="w-full object-contain" />
+      <img src={user.cover} alt="cover" className="w-full object-contain" />
       <div className="flex justify-center -mt-7">
         <Avatar
           alt={user.name}
@@ -23,7 +39,7 @@ const ProfileCard = () => {
       </div>
       <h4 className="text-center font-semibold mt-3">{user.name}</h4>
       <p className="text-center px-2 text-xs mb-3">
-        Bank Teller @ Banque Misr | Customer Onboarding, Commercial Banking
+        {user.title}
       </p>
       <hr />
     </div>

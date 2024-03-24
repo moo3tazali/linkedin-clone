@@ -10,8 +10,12 @@ import FiberManualRecordIcon from "@mui/icons-material/FiberManualRecord";
 import MmsIcon from "@mui/icons-material/Mms";
 import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
 import NewspaperIcon from "@mui/icons-material/Newspaper";
+import { CircularProgress } from "@mui/material";
+import Dialog from "@mui/material/Dialog";
 
 export {
+  Dialog,
+  CircularProgress,
   Avatar,
   MmsIcon,
   CalendarMonthIcon,

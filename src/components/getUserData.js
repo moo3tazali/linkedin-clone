@@ -13,7 +13,11 @@ export const getUserData = async () => {
         },
       }
     );
-    return response.data;
+    const name = response.data.fullName;
+    const title = response.data.title;
+    const avatar = response.data.profilePic.url;
+    const cover = response.data.coverPic.url;
+    return { name, title, avatar, cover };
   } catch (err) {
     console.log(err);
   }

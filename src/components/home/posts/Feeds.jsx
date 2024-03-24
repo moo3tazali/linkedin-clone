@@ -4,17 +4,18 @@ import { getUserToken } from "../../auth/handleAuth";
 import Posts from "./Posts";
 import StartNewPost from "./StartNewPost";
 import axios from "axios";
+import { useRender } from "../../RenderContext";
 
 const Feeds = () => {
   const [posts, setPosts] = useState([]);
-
   const userToken = getUserToken();
+  const { render } = useRender();
 
   let cancelAxios = null;
 
   useEffect(() => {
     axios
-      .get("http://localhost:1337/api/get-posts", {
+      .get("http://localhost:1337/api/get-posts?sort=desc", {
         headers: {
           Authorization: "Bearer " + userToken,
         },
@@ -28,53 +29,55 @@ const Feeds = () => {
     return () => {
       cancelAxios();
     };
-  }, []);
+  }, [render]);
 
   const showPosts = posts.map((post) => {
-    if (post.media != null) {
-      const postId = post.id;
-      const creatorName = post.creator.fullName;
-      const creatorTitle = post.creator.title;
-      const creatorProfilePic = post.creator.profilePic.url;
-      const postContent = post.text;
-      const postMedia = post.media.map((img) => img.url);
-      const postLikes = post.likes;
+    // if (post.media != null) {
+    const postId = post.id;
+    const creatorName = post.creator.fullName;
+    const creatorTitle = post.creator.title;
+    const creatorProfilePic = post.creator.profilePic.url;
+    const postContent = post.text || "";
+    const postMedia = post.media ? post.media.url : "";
+    const postLikes = post.likes;
 
-      return (
-        <Posts
-          key={postId}
-          creatorName={creatorName}
-          creatorTitle={creatorTitle}
-          creatorAvatar={creatorProfilePic}
-          postContent={postContent}
-          postMedia={postMedia[0]}
-          postLikes={postLikes}
-          postComments={0}
-          postReposts={0}
-        />
-      );
-    } else {
-      const postId = post.id;
-      const creatorName = post.creator.fullName;
-      const creatorTitle = post.creator.title;
-      const creatorProfilePic = post.creator.profilePic.url;
-      const postContent = post.text;
-      const postLikes = post.likes;
+    return (
+      <Posts
+        key={postId}
+        creatorName={creatorName}
+        creatorTitle={creatorTitle}
+        creatorAvatar={creatorProfilePic}
+        postContent={postContent}
+        postMedia={postMedia}
+        postLikes={postLikes}
+        postComments={0}
+        postReposts={0}
+      />
+    );
 
-      return (
-        <Posts
-          key={postId}
-          creatorName={creatorName}
-          creatorTitle={creatorTitle}
-          creatorAvatar={creatorProfilePic}
-          postContent={postContent}
-          postMedia={""}
-          postLikes={postLikes}
-          postComments={0}
-          postReposts={0}
-        />
-      );
-    }
+    // }
+    // else {
+    //   const postId = post.id;
+    //   const creatorName = post.creator.fullName;
+    //   const creatorTitle = post.creator.title;
+    //   const creatorProfilePic = post.creator.profilePic.url;
+    //   const postContent = post.text;
+    //   const postLikes = post.likes;
+
+    //   return (
+    //     <Posts
+    //       key={postId}
+    //       creatorName={creatorName}
+    //       creatorTitle={creatorTitle}
+    //       creatorAvatar={creatorProfilePic}
+    //       postContent={postContent}
+    //       postMedia={""}
+    //       postLikes={postLikes}
+    //       postComments={0}
+    //       postReposts={0}
+    //     />
+    //   );
+    // }
   });
   return (
     <div className="md:col-span-6 col-span-8">

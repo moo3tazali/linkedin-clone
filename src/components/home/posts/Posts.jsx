@@ -104,7 +104,7 @@ const Posts = ({
             </div>
           </div>
 
-          <div className="flex justify-between items-center mt-1 border-t px-4 py-1">
+          <div className="flex justify-between items-center mt-1 border-t px-2 lg:px-4 py-1">
             <button className={PostsClasses.button}>
               <ThumbUpOffAltIcon />
               <span className="ss:block hidden">Like</span>

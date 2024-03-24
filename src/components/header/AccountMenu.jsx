@@ -5,6 +5,7 @@ import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import PopupState, { bindTrigger, bindMenu } from "material-ui-popup-state";
 import { useEffect, useState } from "react";
 import { handleLogOut } from "../auth/handleAuth";
+import { getUserData } from "../getUserData";
 
 export default function AccountMenu({ navclass }) {
   const [user, setUser] = useState({
@@ -12,7 +13,16 @@ export default function AccountMenu({ navclass }) {
     avatar: "/static/images/avatar/1.jpg",
   });
 
-
+  useEffect(() => {
+    getUserData().then((data) => {
+      const { name, avatar } = data;
+      setUser({
+        ...user,
+        name,
+        avatar,
+      });
+    });
+  }, []);
 
 
   return (

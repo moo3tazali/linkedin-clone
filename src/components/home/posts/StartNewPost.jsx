@@ -17,12 +17,11 @@ const StartNewPost = () => {
 
   useEffect(() => {
     getUserData().then((data) => {
-      const fullName = data.fullName;
-      const profilePic = data.profilePic.url;
+      const { name, avatar } = data;
       setUser({
         ...user,
-        name: fullName,
-        avatar: profilePic,
+        name,
+        avatar,
       });
     });
   }, []);

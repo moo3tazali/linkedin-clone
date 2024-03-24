@@ -12,16 +12,13 @@ const ProfileCard = () => {
 
   useEffect(() => {
     getUserData().then((data) => {
-      const fullName = data.fullName;
-      const title = data.title;
-      const profilePic = data.profilePic.url;
-      const coverPic = data.coverPic.url;
+      const { name, title, cover, avatar } = data;
       setUser({
         ...user,
-        name: fullName,
-        title: title,
-        cover: coverPic,
-        avatar: profilePic,
+        name,
+        title,
+        cover,
+        avatar,
       });
     });
   }, []);
@@ -38,9 +35,7 @@ const ProfileCard = () => {
         />
       </div>
       <h4 className="text-center font-semibold mt-3">{user.name}</h4>
-      <p className="text-center px-2 text-xs mb-3">
-        {user.title}
-      </p>
+      <p className="text-center px-2 text-xs mb-3">{user.title}</p>
       <hr />
     </div>
   );

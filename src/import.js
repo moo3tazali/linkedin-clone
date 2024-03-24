@@ -12,8 +12,10 @@ import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
 import NewspaperIcon from "@mui/icons-material/Newspaper";
 import { CircularProgress } from "@mui/material";
 import Dialog from "@mui/material/Dialog";
+import { Tooltip } from "@mui/material";
 
 export {
+  Tooltip,
   Dialog,
   CircularProgress,
   Avatar,

@@ -11,14 +11,19 @@ import {
 import { HeaderClasses } from "../../imports/styleClasses";
 import HeaderAccountMenu from "./HeaderAccountMenu";
 
-import { NavLink } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 
 const Header = () => {
   return (
     <header className=" bg-white rounded-t-2xl p-1 shadow sticky top-0 z-50">
       <div className="flex md:justify-between justify-center items-center container mx-auto max-w-[1200px]">
         <div className="flex items-center">
-          <LinkedInIcon className="text-primary" style={{ fontSize: "50px" }} />
+          <Link to="/">
+            <LinkedInIcon
+              className="text-primary"
+              style={{ fontSize: "50px" }}
+            />
+          </Link>
           <div className="hidden md:block relative">
             <SearchIcon
               className="absolute left-2 top-[8px] text-linkedBlack"

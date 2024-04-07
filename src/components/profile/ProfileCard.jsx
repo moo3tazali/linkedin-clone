@@ -7,23 +7,61 @@ import {
   CameraAltIcon,
 } from "../../imports/import";
 import { getUserToken } from "../../hooks/handleAuth";
-import { handleUserDataApi } from "../../store/features/userDataSlice";
 
 import { useEffect, useRef, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
+import { useLocation } from "react-router-dom";
 import axios from "axios";
 
 const ProfileCard = () => {
   const [coverPic, setCoverPic] = useState(null);
   const coverIconRef = useRef();
   const userToken = getUserToken();
-  const dispatch = useDispatch();
-  const { name, title, avatar, cover, coverId, userId, userName, isLoading } =
-    useSelector((state) => state.userData);
+  const location = useLocation();
+  const { userId } = useSelector((state) => state.userData);
 
+  const [profile, setProfile] = useState({
+    name: "",
+    title: "",
+    avatar: "",
+    cover: "",
+    coverId: "",
+    userId: "",
+    userName: "",
+    isLoading: false,
+  });
   useEffect(() => {
-    dispatch(handleUserDataApi());
-  }, []);
+    try {
+      axios
+        .get("http://localhost:1337/api/users?populate=*", {
+          headers: { Authorization: "Bearer " + userToken },
+        })
+        .then((res) => {
+          const users = res.data;
+          const currentPath = location.pathname.split("/");
+          const visitedProfileUserName = currentPath[currentPath.length - 1];
+          users.map((user) => {
+            if (user.username === visitedProfileUserName) {
+              setProfile({
+                ...profile,
+                name: user.fullName || user.username,
+                title: user.title || "",
+                avatar: user.profilePic
+                  ? user.profilePic.url
+                  : "/static/images/avatar/1.jpg",
+                cover: user.coverPic
+                  ? user.coverPic.url
+                  : "https://res.cloudinary.com/dlpkoketm/image/upload/v1711390852/Screenshot_2024_03_25_201913_1babd8460d.png",
+                userId: user.id,
+                userName: user.username,
+              });
+            }
+          });
+        });
+    } catch (error) {
+      console.log(error);
+    }
+  }, [location, userToken]);
 
   const handleOnChange = (e) => {
     setCoverPic(e.target.files[0]);
@@ -59,7 +97,7 @@ const ProfileCard = () => {
     <div className="col-span-9 bg-white rounded-lg w-full overflow-hidden border border-gray-200  shadow">
       <div className=" relative">
         <img
-          src={coverPic ? URL.createObjectURL(coverPic) : cover}
+          src={coverPic ? URL.createObjectURL(coverPic) : profile.cover}
           alt="cover"
           className="w-full object-cover max-h-[150px] sm:max-h-[200px]"
         />
@@ -100,7 +138,7 @@ const ProfileCard = () => {
           <div
             onClick={handleDeleteCoverPic}
             className={`text-red-500 absolute top-14 shadow flex justify-center items-center right-5 bg-white w-7 h-7 rounded-full cursor-pointer ${
-              cover ? "" : "hidden"
+              profile.cover ? "" : "hidden"
             }`}
           >
             <NoPhotographyIcon fontSize="small" />
@@ -111,14 +149,14 @@ const ProfileCard = () => {
         <div className="flex justify-start -mt-[60px]">
           <Avatar
             onClick={handleUpdateProfilePic}
-            alt={name}
-            src={avatar}
+            alt={profile.name}
+            src={profile.avatar}
             sx={{ width: 120, height: 120 }}
             className="outline outline-white"
           />
         </div>
-        <h1 className="font-semibold mt-3 text-2xl">{name}</h1>
-        <p className="mb-3">{title}</p>
+        <h1 className="font-semibold mt-3 text-2xl">{profile.name}</h1>
+        <p className="mb-3">{profile.title}</p>
       </div>
     </div>
   );

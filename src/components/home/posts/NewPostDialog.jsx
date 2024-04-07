@@ -1,5 +1,5 @@
-import { useEffect, useRef, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useRef, useState } from "react";
+import { useSelector } from "react-redux";
 import axios from "axios";
 
 import { getUserToken } from "../../../hooks/handleAuth";
@@ -12,22 +12,16 @@ import {
   CircularProgress,
   Dialog,
 } from "../../../imports/import";
-import { handleUserDataApi } from "../../../store/features/userDataSlice";
 
 export default function NewPostDialog() {
   const [open, setOpen] = useState(false);
   const [postContent, setPostContent] = useState("");
   const [selectedFile, setSelectedFile] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
-  const dispatch = useDispatch();
   const { name, title, avatar } = useSelector((state) => state.userData);
   const mediaIconRef = useRef();
   const { callRender } = useRender();
   const userToken = getUserToken();
-
-  useEffect(() => {
-    dispatch(handleUserDataApi());
-  }, []);
 
   // HANDLE POSTING NEW POST
   async function handlePostClicked() {

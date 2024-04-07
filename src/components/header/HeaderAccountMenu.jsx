@@ -69,7 +69,7 @@ export default function HeaderAccountMenu() {
           >
             <MenuItem onClick={popupState.close}>
               <Link
-                to={`in/${userName}`}
+                to={`/in/${userName}`}
                 className="flex items-center border-b pb-2"
               >
                 <Avatar

@@ -1,5 +1,4 @@
-import { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 
 import {
   Avatar,
@@ -9,15 +8,9 @@ import {
 } from "../../../imports/import.js";
 import NewPostDialog from "./NewPostDialog.jsx";
 import { StartNewPostClasses } from "../../../imports/styleClasses.js";
-import { handleUserDataApi } from "../../../store/features/userDataSlice.js";
 
 const StartNewPost = () => {
-  const dispatch = useDispatch();
   const { name, avatar } = useSelector((state) => state.userData);
-
-  useEffect(() => {
-    dispatch(handleUserDataApi());
-  }, []);
 
   return (
     <div className="bg-white p-3 rounded-lg shadow border border-gray-200">

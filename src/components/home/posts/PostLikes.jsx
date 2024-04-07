@@ -39,7 +39,7 @@ export const PostLikes = ({ postLikes, postId }) => {
 
     return (
       <Link
-        to={`in/${userName}`}
+        to={`/in/${userName}`}
         key={like.id}
         className="flex items-center gap-3 px-6 py-1 cursor-pointer"
       >

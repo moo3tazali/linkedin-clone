@@ -1,4 +1,4 @@
-import { getUserToken } from "./handleAuth";
+import { getUserToken } from "../../hooks/handleAuth";
 import { Outlet } from "react-router-dom";
 
 const auth = getUserToken();

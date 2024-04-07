@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import { storeUser } from "./handleAuth";
+import { storeUser } from "../../hooks/handleAuth";
 import AuthForm from "./AuthForm";
 
 const SignUp = () => {

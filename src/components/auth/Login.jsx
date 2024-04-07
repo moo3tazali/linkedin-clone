@@ -1,6 +1,6 @@
 import { useState } from "react";
 import axios from "axios";
-import { storeUser } from "./handleAuth";
+import { storeUser } from "../../hooks/handleAuth";
 import { useNavigate } from "react-router-dom";
 import AuthForm from "./AuthForm";
 

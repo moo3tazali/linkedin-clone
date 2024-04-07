@@ -4,7 +4,7 @@ import CloseIcon from "@mui/icons-material/Close";
 import DoneIcon from "@mui/icons-material/Done";
 import { useEffect, useRef, useState } from "react";
 import axios from "axios";
-import { getUserToken } from "../auth/handleAuth";
+import { getUserToken } from "../../hooks/handleAuth";
 import { useDispatch, useSelector } from "react-redux";
 import { handleUserDataApi } from "../../store/features/userDataSlice";
 import NoPhotographyIcon from "@mui/icons-material/NoPhotography";

@@ -1,14 +1,12 @@
-import { getUserToken } from "../../auth/handleAuth";
-import { useRender } from "../../RenderContext";
+import { getUserToken } from "../../../hooks/handleAuth";
+import { useRender } from "../../../contexts/RenderContext";
 import axios from "axios";
-import { ThumbUpIcon, ThumbUpOffAltIcon } from "../../../import";
-import { PostsClasses } from "../../styleClasses";
+import { ThumbUpIcon, ThumbUpOffAltIcon } from "../../../imports/import";
+import { PostsClasses } from "../../../imports/styleClasses";
 
 const LikeBtn = ({ postId, isLiked }) => {
   const userToken = getUserToken();
   const { callRender } = useRender();
-
-
 
   function handleLikeClicked(postId) {
     if (!isLiked) {

@@ -1,8 +1,8 @@
 import { useEffect, useRef, useState } from "react";
 import axios from "axios";
-import { getUserData } from "../../getUserData";
-import { getUserToken } from "../../auth/handleAuth";
-import { useRender } from "../../RenderContext";
+import { getUserData } from "../../../hooks/getUserData";
+import { getUserToken } from "../../../hooks/handleAuth";
+import { useRender } from "../../../contexts/RenderContext";
 import {
   MmsIcon,
   Avatar,
@@ -10,7 +10,7 @@ import {
   Tooltip,
   CircularProgress,
   Dialog,
-} from "../../../import";
+} from "../../../imports/import";
 
 export default function NewPostDialog() {
   const [open, setOpen] = useState(false);

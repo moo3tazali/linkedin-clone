@@ -1,5 +1,5 @@
 import axios from "axios";
-import { getUserToken } from "./auth/handleAuth";
+import { getUserToken } from "./handleAuth";
 
 export const getUserData = async () => {
   const userToken = getUserToken();
@@ -26,6 +26,3 @@ export const getUserData = async () => {
     console.log(err);
   }
 };
-
-
-

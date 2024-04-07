@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
-import { getUserToken } from "../../components/auth/handleAuth";
+import { getUserToken } from "../../hooks/handleAuth";
 
 export const handleUserDataApi = createAsyncThunk("userDataApi", async () => {
   const userToken = getUserToken();

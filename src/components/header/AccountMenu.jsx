@@ -4,8 +4,8 @@ import MenuItem from "@mui/material/MenuItem";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import PopupState, { bindTrigger, bindMenu } from "material-ui-popup-state";
 import { useEffect, useState } from "react";
-import { handleLogOut } from "../auth/handleAuth";
-import { getUserData } from "../getUserData";
+import { handleLogOut } from "../../hooks/handleAuth";
+import { getUserData } from "../../hooks/getUserData";
 import { Link } from "react-router-dom";
 
 export default function AccountMenu({ navclass }) {

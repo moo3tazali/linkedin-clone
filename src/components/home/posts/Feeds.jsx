@@ -1,10 +1,10 @@
 /* eslint-disable react/jsx-key */
 import { useEffect, useState } from "react";
-import { getUserToken } from "../../auth/handleAuth";
+import { getUserToken } from "../../../hooks/handleAuth";
 import Posts from "./Posts";
 import StartNewPost from "./StartNewPost";
 import axios from "axios";
-import { useRender } from "../../RenderContext";
+import { useRender } from "../../../contexts/RenderContext";
 import moment from "moment";
 
 const Feeds = () => {

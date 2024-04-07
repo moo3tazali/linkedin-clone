@@ -1,13 +1,13 @@
 import { useEffect, useState } from "react";
 import NewPostDialog from "./NewPostDialog.jsx";
-import { StartNewPostClasses } from "../../styleClasses.js";
-import { getUserData } from "../../getUserData.js";
+import { StartNewPostClasses } from "../../../imports/styleClasses.js";
+import { getUserData } from "../../../hooks/getUserData.js";
 import {
   Avatar,
   MmsIcon,
   CalendarMonthIcon,
   NewspaperIcon,
-} from "../../../import.js";
+} from "../../../imports/import.js";
 
 const StartNewPost = () => {
   const [user, setUser] = useState({

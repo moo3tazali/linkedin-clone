@@ -1,7 +1,7 @@
 /* eslint-disable react/prop-types */
 import { useState } from "react";
 import PopupMenu from "../PopupMenu";
-import { PostsClasses } from "../../styleClasses";
+import { PostsClasses } from "../../../imports/styleClasses";
 import {
   Avatar,
   IconButton,
@@ -12,7 +12,7 @@ import {
   RepeatIcon,
   SendIcon,
   FiberManualRecordIcon,
-} from "../../../import";
+} from "../../../imports/import";
 
 import LikeBtn from "./LikeBtn";
 import { PostLikes } from "./PostLikes";

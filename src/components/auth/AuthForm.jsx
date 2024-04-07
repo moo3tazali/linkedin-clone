@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { AuthFormClasses } from "../styleClasses";
+import { AuthFormClasses } from "../../imports/styleClasses.js";
 import { CircularProgress } from "@mui/material";
 import logo from "../../assets/LI-Logo.png";
 

@@ -5,7 +5,7 @@ import SignUp from "./components/auth/SignUp";
 import Login from "./components/auth/Login";
 import PrivateRoutes from "./components/auth/PrivateRoutes";
 import HideAuthRotes from "./components/auth/HideAuthRotes";
-import { RenderProvider } from "./components/RenderContext";
+import { RenderProvider } from "./contexts/RenderContext";
 import UserProfile from "./components/profile/UserProfile";
 function App() {
   return (

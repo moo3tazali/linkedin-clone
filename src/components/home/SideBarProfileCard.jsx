@@ -1,6 +1,6 @@
 import { Avatar } from "@mui/material";
 import { useState, useEffect } from "react";
-import { getUserData } from "../getUserData.js";
+import { getUserData } from "../../hooks/getUserData";
 
 const SideBarProfileCard = () => {
   const [user, setUser] = useState({

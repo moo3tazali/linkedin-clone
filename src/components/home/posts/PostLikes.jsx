@@ -1,8 +1,8 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { getUserToken } from "../../auth/handleAuth";
-import { ThumbUpOffAltIcon, Avatar, Dialog } from "../../../import";
-import { useRender } from "../../RenderContext";
+import { getUserToken } from "../../../hooks/handleAuth";
+import { ThumbUpOffAltIcon, Avatar, Dialog } from "../../../imports/import";
+import { useRender } from "../../../contexts/RenderContext";
 import { Link } from "react-router-dom";
 
 export const PostLikes = ({ postLikes, postId }) => {

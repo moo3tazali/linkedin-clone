@@ -1,5 +1,5 @@
 import { Navigate, Outlet } from "react-router-dom";
-import { getUserToken } from "./handleAuth";
+import { getUserToken } from "../../hooks/handleAuth";
 
 const PrivateRoutes = () => {
   const auth = getUserToken();

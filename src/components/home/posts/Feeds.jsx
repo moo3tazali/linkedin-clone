@@ -35,6 +35,7 @@ const Feeds = () => {
   const showPosts = posts.map((post) => {
     // if (post.media != null) {
     const postId = post.id;
+    const creatorUserName = post.creator.username;
     const creatorName = post.creator.fullName || post.creator.username;
     const creatorTitle = post.creator.title;
     const creatorProfilePic = post.creator.profilePic
@@ -49,6 +50,7 @@ const Feeds = () => {
       <Posts
         key={postId}
         postId={postId}
+        creatorUserName={creatorUserName}
         creatorName={creatorName}
         creatorTitle={creatorTitle}
         creatorAvatar={creatorProfilePic}

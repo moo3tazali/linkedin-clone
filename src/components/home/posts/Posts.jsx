@@ -1,5 +1,7 @@
 /* eslint-disable react/prop-types */
 import { useState } from "react";
+import { Link } from "react-router-dom";
+
 import PopupMenu from "./PopupMenu";
 import { PostsClasses } from "../../../imports/styleClasses";
 import {
@@ -7,17 +9,16 @@ import {
   IconButton,
   CloseIcon,
   PublicIcon,
-  ThumbUpOffAltIcon,
   CommentOutlinedIcon,
   RepeatIcon,
   SendIcon,
   FiberManualRecordIcon,
 } from "../../../imports/import";
-
 import LikeBtn from "./LikeBtn";
 import { PostLikes } from "./PostLikes";
 
 const Posts = ({
+  creatorUserName = "",
   creatorName = "",
   creatorTitle = "",
   creatorAvatar = "",
@@ -42,14 +43,20 @@ const Posts = ({
         {/* POST HEADER */}
         <div className="flex justify-between items-start px-4 pt-4">
           <div className="flex items-center gap-3">
-            <Avatar
-              alt={creatorName}
-              src={creatorAvatar}
-              sx={{ width: 48, height: 48 }}
-              className="outline outline-white"
-            />
+            <Link to={`in/${creatorUserName}`}>
+              <Avatar
+                alt={creatorName}
+                src={creatorAvatar}
+                sx={{ width: 48, height: 48 }}
+                className="outline outline-white"
+              />
+            </Link>
             <div>
-              <h1 className="text-sm font-semibold">{creatorName}</h1>
+              <Link to={`in/${creatorUserName}`}>
+                <h1 className="text-sm font-semibold hover:underline">
+                  {creatorName}
+                </h1>
+              </Link>
               <h2 className="text-secondary text-xs">{creatorTitle}</h2>
               <span className="text-xs text-secondary">{date}</span>
               <FiberManualRecordIcon

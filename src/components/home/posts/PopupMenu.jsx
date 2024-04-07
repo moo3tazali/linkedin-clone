@@ -67,7 +67,6 @@ export default function PopupMenu() {
         aria-controls={open ? "demo-customized-menu" : undefined}
         aria-haspopup="true"
         aria-expanded={open ? "true" : undefined}
-        
         onClick={handleClick}
       >
         <MoreHorizIcon className="text-secondary" />

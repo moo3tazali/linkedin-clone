@@ -28,3 +28,7 @@ export const StartNewPostClasses = {
   icons:
     "flex items-center gap-2 py-3 px-2 w-fit rounded cursor-pointer transition-all duration-300 hover:bg-background",
 };
+
+export const HeaderClasses = {
+  nav: "flex flex-col justify-center items-center text-secondary ss:min-w-[80px] min-w-[48px] min-h-[52px] border-b-2 border-transparent hover:text-linkedBlack transition-all duration-300 pb-1",
+};

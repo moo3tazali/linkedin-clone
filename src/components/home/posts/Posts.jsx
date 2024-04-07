@@ -1,6 +1,6 @@
 /* eslint-disable react/prop-types */
 import { useState } from "react";
-import PopupMenu from "../PopupMenu";
+import PopupMenu from "./PopupMenu";
 import { PostsClasses } from "../../../imports/styleClasses";
 import {
   Avatar,

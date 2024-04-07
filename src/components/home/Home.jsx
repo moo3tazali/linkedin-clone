@@ -1,6 +1,6 @@
-import Sidebar from "./Sidebar";
+import Sidebar from "./leftSidebar/Sidebar";
 import Feeds from "./posts/Feeds";
-import Widgets from "./Widgets";
+import Widgets from "./rightSidebar/Widgets";
 import Header from "../header/Header";
 
 const Home = () => {

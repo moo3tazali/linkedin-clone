@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
-import { getUserData } from "../../../hooks/getUserData";
+
 import { getUserToken } from "../../../hooks/handleAuth";
 import { useRender } from "../../../contexts/RenderContext";
 import {
@@ -11,33 +12,21 @@ import {
   CircularProgress,
   Dialog,
 } from "../../../imports/import";
+import { handleUserDataApi } from "../../../store/features/userDataSlice";
 
 export default function NewPostDialog() {
   const [open, setOpen] = useState(false);
   const [postContent, setPostContent] = useState("");
   const [selectedFile, setSelectedFile] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
-  const [user, setUser] = useState({
-    name: "",
-    title: "",
-    avatar: "/static/images/avatar/1.jpg",
-  });
+  const dispatch = useDispatch();
+  const { name, title, avatar } = useSelector((state) => state.userData);
   const mediaIconRef = useRef();
   const { callRender } = useRender();
-
-  // GET USER DATA
   const userToken = getUserToken();
-  useEffect(() => {
-    getUserData().then((data) => {
-      const { name, title, avatar } = data;
 
-      setUser({
-        ...user,
-        name,
-        title,
-        avatar,
-      });
-    });
+  useEffect(() => {
+    dispatch(handleUserDataApi());
   }, []);
 
   // HANDLE POSTING NEW POST
@@ -122,14 +111,14 @@ export default function NewPostDialog() {
           <div className="flex justify-between items-center p-4">
             <div className="flex items-center gap-3">
               <Avatar
-                alt={user.name}
-                src={user.avatar}
+                alt={name}
+                src={avatar}
                 sx={{ width: 48, height: 48 }}
                 className="outline outline-white"
               />
               <div>
-                <h1 className="text-sm font-semibold">{user.name}</h1>
-                <h2 className="text-secondary text-xs">{user.title}</h2>
+                <h1 className="text-sm font-semibold">{name}</h1>
+                <h2 className="text-secondary text-xs">{title}</h2>
               </div>
             </div>
             <button

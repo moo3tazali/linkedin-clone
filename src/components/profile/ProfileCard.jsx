@@ -1,13 +1,17 @@
-import { Avatar, Tooltip } from "@mui/material";
-import CameraAltIcon from "@mui/icons-material/CameraAlt";
-import CloseIcon from "@mui/icons-material/Close";
-import DoneIcon from "@mui/icons-material/Done";
-import { useEffect, useRef, useState } from "react";
-import axios from "axios";
+import {
+  Avatar,
+  Tooltip,
+  CloseIcon,
+  NoPhotographyIcon,
+  DoneIcon,
+  CameraAltIcon,
+} from "../../imports/import";
 import { getUserToken } from "../../hooks/handleAuth";
-import { useDispatch, useSelector } from "react-redux";
 import { handleUserDataApi } from "../../store/features/userDataSlice";
-import NoPhotographyIcon from "@mui/icons-material/NoPhotography";
+
+import { useEffect, useRef, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import axios from "axios";
 
 const ProfileCard = () => {
   const [coverPic, setCoverPic] = useState(null);

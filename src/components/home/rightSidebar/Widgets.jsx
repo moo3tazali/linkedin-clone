@@ -1,5 +1,5 @@
-import FollowCard from "../FollowCard";
-import TriggersTooltips from "../TriggersTooltips";
+import FollowCard from "../../FollowCard";
+import TriggersTooltips from "../../TriggersTooltips";
 import AssignmentLateIcon from "@mui/icons-material/AssignmentLate";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 

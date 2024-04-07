@@ -1,37 +1,30 @@
-import { useEffect, useState } from "react";
-import NewPostDialog from "./NewPostDialog.jsx";
-import { StartNewPostClasses } from "../../../imports/styleClasses.js";
-import { getUserData } from "../../../hooks/getUserData.js";
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+
 import {
   Avatar,
   MmsIcon,
   CalendarMonthIcon,
   NewspaperIcon,
 } from "../../../imports/import.js";
+import NewPostDialog from "./NewPostDialog.jsx";
+import { StartNewPostClasses } from "../../../imports/styleClasses.js";
+import { handleUserDataApi } from "../../../store/features/userDataSlice.js";
 
 const StartNewPost = () => {
-  const [user, setUser] = useState({
-    name: "",
-    avatar: "/static/images/avatar/1.jpg",
-  });
+  const dispatch = useDispatch();
+  const { name, avatar } = useSelector((state) => state.userData);
 
   useEffect(() => {
-    getUserData().then((data) => {
-      const { name, avatar } = data;
-      setUser({
-        ...user,
-        name,
-        avatar,
-      });
-    });
+    dispatch(handleUserDataApi());
   }, []);
 
   return (
     <div className="bg-white p-3 rounded-lg shadow border border-gray-200">
       <div className="flex items-center gap-3">
         <Avatar
-          alt={user.name}
-          src={user.avatar}
+          alt={name}
+          src={avatar}
           sx={{ width: 48, height: 48 }}
           className="outline outline-white"
         />

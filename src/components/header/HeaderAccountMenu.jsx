@@ -1,32 +1,28 @@
-import Avatar from "@mui/material/Avatar";
-import Menu from "@mui/material/Menu";
-import MenuItem from "@mui/material/MenuItem";
-import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
-import PopupState, { bindTrigger, bindMenu } from "material-ui-popup-state";
-import { useEffect, useState } from "react";
+import {
+  Avatar,
+  Menu,
+  MenuItem,
+  ArrowDropDownIcon,
+  PopupState,
+  bindTrigger,
+  bindMenu,
+} from "../../imports/import";
 import { handleLogOut } from "../../hooks/handleAuth";
-import { getUserData } from "../../hooks/getUserData";
-import { Link } from "react-router-dom";
+import { handleUserDataApi } from "../../store/features/userDataSlice";
+import { HeaderClasses } from "../../imports/styleClasses";
 
-export default function AccountMenu({ navclass }) {
-  const [user, setUser] = useState({
-    name: "",
-    avatar: "/static/images/avatar/1.jpg",
-    title: "",
-    userName: "",
-  });
+import { useEffect } from "react";
+import { Link } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+
+export default function HeaderAccountMenu() {
+  const dispatch = useDispatch();
+  const { name, avatar, title, userName } = useSelector(
+    (state) => state.userData
+  );
 
   useEffect(() => {
-    getUserData().then((data) => {
-      const { name, avatar, title, userName } = data;
-      setUser({
-        ...user,
-        name,
-        avatar,
-        title,
-        userName,
-      });
-    });
+    dispatch(handleUserDataApi());
   }, []);
 
   return (
@@ -34,12 +30,12 @@ export default function AccountMenu({ navclass }) {
       {(popupState) => (
         <>
           <div
-            className={`cursor-pointer ${navclass}`}
+            className={`cursor-pointer ${HeaderClasses.nav}`}
             {...bindTrigger(popupState)}
           >
             <Avatar
-              alt={user.name}
-              src={user.avatar}
+              alt={name}
+              src={avatar}
               sx={{
                 width: 24,
                 height: 24,
@@ -73,19 +69,19 @@ export default function AccountMenu({ navclass }) {
           >
             <MenuItem onClick={popupState.close}>
               <Link
-                to={`in/${user.userName}`}
+                to={`in/${userName}`}
                 className="flex items-center border-b pb-2"
               >
                 <Avatar
-                  alt={user.name}
-                  src={user.avatar}
+                  alt={name}
+                  src={avatar}
                   sx={{ width: 70, height: 70 }}
                   className="outline outline-white"
                 />
 
                 <div>
-                  <h4 className="font-semibold">{user.name}</h4>
-                  <p className="text-xs">{user.title}</p>
+                  <h4 className="font-semibold">{name}</h4>
+                  <p className="text-xs">{title}</p>
                 </div>
               </Link>
             </MenuItem>

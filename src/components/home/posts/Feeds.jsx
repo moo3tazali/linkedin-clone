@@ -5,6 +5,7 @@ import Posts from "./Posts";
 import StartNewPost from "./StartNewPost";
 import axios from "axios";
 import { useRender } from "../../RenderContext";
+import moment from "moment";
 
 const Feeds = () => {
   const [posts, setPosts] = useState([]);
@@ -34,24 +35,30 @@ const Feeds = () => {
   const showPosts = posts.map((post) => {
     // if (post.media != null) {
     const postId = post.id;
-    const creatorName = post.creator.fullName;
+    const creatorName = post.creator.fullName || post.creator.username;
     const creatorTitle = post.creator.title;
-    const creatorProfilePic = post.creator.profilePic.url;
+    const creatorProfilePic = post.creator.profilePic
+      ? post.creator.profilePic.url
+      : "";
     const postContent = post.text || "";
     const postMedia = post.media ? post.media.url : "";
     const postLikes = post.likes;
-
+    const isLiked = post.isLiked;
+    const date = moment().from(post.createdAt, true);
     return (
       <Posts
         key={postId}
+        postId={postId}
         creatorName={creatorName}
         creatorTitle={creatorTitle}
         creatorAvatar={creatorProfilePic}
         postContent={postContent}
         postMedia={postMedia}
         postLikes={postLikes}
+        isLiked={isLiked}
         postComments={0}
         postReposts={0}
+        date={date + " ago"}
       />
     );
 

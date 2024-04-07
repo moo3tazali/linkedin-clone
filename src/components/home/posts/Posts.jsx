@@ -14,6 +14,9 @@ import {
   FiberManualRecordIcon,
 } from "../../../import";
 
+import LikeBtn from "./LikeBtn";
+import { PostLikes } from "./PostLikes";
+
 const Posts = ({
   creatorName = "",
   creatorTitle = "",
@@ -23,8 +26,12 @@ const Posts = ({
   postLikes = 0,
   postComments = 0,
   postReposts = 0,
+  date = "",
+  postId,
+  isLiked,
 }) => {
   const [expanded, setExpanded] = useState(false);
+
   const toggleExpanded = () => {
     setExpanded(!expanded);
   };
@@ -44,7 +51,7 @@ const Posts = ({
             <div>
               <h1 className="text-sm font-semibold">{creatorName}</h1>
               <h2 className="text-secondary text-xs">{creatorTitle}</h2>
-              <span className="text-xs text-secondary">4d</span>
+              <span className="text-xs text-secondary">{date}</span>
               <FiberManualRecordIcon
                 sx={{ fontSize: "5px", margin: "0 2px" }}
                 className="text-secondary"
@@ -88,12 +95,7 @@ const Posts = ({
         {/* POST FOOTER */}
         <div className="mt-2">
           <div className="flex items-center justify-between px-4">
-            <div className="flex items-center gap-1">
-              <Avatar sx={{ bgcolor: "#0A66C2", width: 14, height: 14 }}>
-                <ThumbUpOffAltIcon sx={{ fontSize: "10px" }} />
-              </Avatar>
-              <span className="text-xs text-secondary">{postLikes}</span>
-            </div>
+            <PostLikes postLikes={postLikes} postId={postId} />
             <div className="text-xs text-secondary">
               <span>{postComments} comments</span>
               <FiberManualRecordIcon
@@ -105,10 +107,7 @@ const Posts = ({
           </div>
 
           <div className="flex justify-between items-center mt-1 border-t px-2 lg:px-4 py-1">
-            <button className={PostsClasses.button}>
-              <ThumbUpOffAltIcon />
-              <span className="ss:block hidden">Like</span>
-            </button>
+            <LikeBtn postId={postId} isLiked={isLiked} />
             <button className={PostsClasses.button}>
               <CommentOutlinedIcon />
               <span className="ss:block hidden">Comment</span>

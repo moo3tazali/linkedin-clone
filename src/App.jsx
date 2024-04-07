@@ -6,6 +6,7 @@ import Login from "./components/auth/Login";
 import PrivateRoutes from "./components/auth/PrivateRoutes";
 import HideAuthRotes from "./components/auth/HideAuthRotes";
 import { RenderProvider } from "./components/RenderContext";
+import UserProfile from "./components/profile/UserProfile";
 function App() {
   return (
     <>
@@ -13,6 +14,7 @@ function App() {
         <Routes>
           <Route element={<PrivateRoutes />}>
             <Route path="/" element={<Home />} />
+            <Route path="/in/:userName" element={<UserProfile />} />
           </Route>
           <Route element={<HideAuthRotes />}>
             <Route path="signup" element={<SignUp />} />

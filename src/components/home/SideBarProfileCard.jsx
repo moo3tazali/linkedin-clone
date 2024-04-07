@@ -1,8 +1,8 @@
 import { Avatar } from "@mui/material";
 import { useState, useEffect } from "react";
-import { getUserData } from "../components/getUserData.js";
+import { getUserData } from "../getUserData.js";
 
-const ProfileCard = () => {
+const SideBarProfileCard = () => {
   const [user, setUser] = useState({
     name: "",
     title: "",
@@ -41,4 +41,4 @@ const ProfileCard = () => {
   );
 };
 
-export default ProfileCard;
+export default SideBarProfileCard;

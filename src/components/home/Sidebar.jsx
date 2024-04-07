@@ -1,4 +1,4 @@
-import ProfileCard from "../ProfileCard";
+import ProfileCard from "./SideBarProfileCard";
 import SidebarBody from "./SidebarBody";
 
 const Sidebar = () => {

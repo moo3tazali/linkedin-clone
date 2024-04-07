@@ -13,8 +13,10 @@ import NewspaperIcon from "@mui/icons-material/Newspaper";
 import { CircularProgress } from "@mui/material";
 import Dialog from "@mui/material/Dialog";
 import { Tooltip } from "@mui/material";
+import ThumbUpIcon from '@mui/icons-material/ThumbUp';
 
 export {
+  ThumbUpIcon,
   Tooltip,
   Dialog,
   CircularProgress,

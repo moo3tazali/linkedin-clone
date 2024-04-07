@@ -36,7 +36,7 @@ const Header = () => {
           </div>
         </div>
 
-        <nav className="flex items-center ">
+        <nav className="flex items-center py-1">
           <NavLink to="/" className={classes.nav}>
             <HomeIcon style={{ fontSize: "30px", marginBottom: "-3px" }} />
             <span className="text-xs font-medium hidden ss:block">Home</span>

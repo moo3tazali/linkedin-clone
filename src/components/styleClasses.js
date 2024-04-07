@@ -19,7 +19,7 @@ export const AuthFormClasses = {
 
 export const PostsClasses = {
   button:
-    "flex items-center space-x-1 text-secondary hover:bg-background px-4 lg:px-6 py-3 rounded-md text-sm font-[500]",
+    "flex items-center space-x-1 hover:bg-background px-4 lg:px-6 py-3 rounded-md text-sm font-[500]",
   postBox:
     "bg-white rounded-lg shadow-sm max-w-xl mx-auto my-4 border border-gray-200",
 };

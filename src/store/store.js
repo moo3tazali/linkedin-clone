@@ -1,8 +1,8 @@
 import { configureStore } from "@reduxjs/toolkit";
-import cloudinaryApiSliceReducer from "./features/auth/cloudinaryApiSlice";
+import userDataReducer from "./features/userDataSlice";
 
 export const store = configureStore({
   reducer: {
-    cloudinaryApi: cloudinaryApiSliceReducer,
+    userData: userDataReducer,
   },
 });

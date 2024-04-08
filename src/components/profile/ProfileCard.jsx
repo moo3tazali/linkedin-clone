@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import {
   Avatar,
   Tooltip,
@@ -19,7 +20,7 @@ const ProfileCard = () => {
   const userToken = getUserToken();
   const location = useLocation();
   const { userId } = useSelector((state) => state.userData);
-
+  const [isMyProfile, setIsMyProfile] = useState(false);
   const [profile, setProfile] = useState({
     name: "",
     title: "",
@@ -63,6 +64,14 @@ const ProfileCard = () => {
     }
   }, [location, userToken]);
 
+  useEffect(() => {
+    if (profile.userId == userId) {
+      setIsMyProfile(true);
+    } else {
+      setIsMyProfile(false);
+    }
+  }, [profile]);
+
   const handleOnChange = (e) => {
     setCoverPic(e.target.files[0]);
   };
@@ -105,7 +114,7 @@ const ProfileCard = () => {
           onClick={() => coverIconRef.current.click()}
           className={`text-primary absolute top-5 shadow flex justify-center items-center right-5 bg-white w-7 h-7 rounded-full cursor-pointer ${
             coverPic ? "hidden" : ""
-          }`}
+          } ${isMyProfile ? "" : "hidden"}`}
         >
           <Tooltip title="Change" placement="left">
             <CameraAltIcon fontSize="small" />
@@ -139,7 +148,7 @@ const ProfileCard = () => {
             onClick={handleDeleteCoverPic}
             className={`text-red-500 absolute top-14 shadow flex justify-center items-center right-5 bg-white w-7 h-7 rounded-full cursor-pointer ${
               profile.cover ? "" : "hidden"
-            }`}
+            } ${isMyProfile ? "" : "hidden"}`}
           >
             <NoPhotographyIcon fontSize="small" />
           </div>

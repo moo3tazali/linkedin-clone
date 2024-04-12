@@ -1,24 +1,22 @@
 import { useRef, useState } from "react";
-import { useSelector } from "react-redux";
 import axios from "axios";
 
 import { getUserToken } from "../../../hooks/handleAuth";
 import { useRender } from "../../../contexts/RenderContext";
 import {
   MmsIcon,
-  Avatar,
   IconButton,
   Tooltip,
   CircularProgress,
   Dialog,
 } from "../../../imports/import";
+import ProfileCard from "../../ProfileCard";
 
 export default function NewPostDialog() {
   const [open, setOpen] = useState(false);
   const [postContent, setPostContent] = useState("");
   const [selectedFile, setSelectedFile] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
-  const { name, title, avatar } = useSelector((state) => state.userData);
   const mediaIconRef = useRef();
   const { callRender } = useRender();
   const userToken = getUserToken();
@@ -33,7 +31,7 @@ export default function NewPostDialog() {
     });
 
     try {
-      await axios.post("http://localhost:1337/api/createpost", formData, {
+      await axios.post("http://localhost:1337/api/posts", formData, {
         headers: {
           Authorization: "Bearer " + userToken,
         },
@@ -103,18 +101,7 @@ export default function NewPostDialog() {
       >
         <div>
           <div className="flex justify-between items-center p-4">
-            <div className="flex items-center gap-3">
-              <Avatar
-                alt={name}
-                src={avatar}
-                sx={{ width: 48, height: 48 }}
-                className="outline outline-white"
-              />
-              <div>
-                <h1 className="text-sm font-semibold">{name}</h1>
-                <h2 className="text-secondary text-xs">{title}</h2>
-              </div>
-            </div>
+            <ProfileCard showName showTitle />
             <button
               onClick={() => setOpen(false)}
               className="font-semibold transition duration-300 hover:bg-gray-200 text-gray-600 text-2xl rounded-full w-11 h-11 flex items-center justify-center"

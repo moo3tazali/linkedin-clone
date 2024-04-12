@@ -15,7 +15,7 @@ export const PostLikes = ({ postLikes, postId }) => {
   let cancelAxiox = null;
   useEffect(() => {
     axios
-      .get(`http://localhost:1337/api/post-likes/${postId}`, {
+      .get(`http://localhost:1337/api/likes/${postId}`, {
         headers: { Authorization: "Bearer " + userToken },
         cancelToken: new axios.CancelToken((c) => {
           cancelAxiox = c;

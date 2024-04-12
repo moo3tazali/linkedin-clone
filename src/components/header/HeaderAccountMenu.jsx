@@ -8,22 +8,13 @@ import {
   bindMenu,
 } from "../../imports/import";
 import { handleLogOut } from "../../hooks/handleAuth";
-import { handleUserDataApi } from "../../store/features/userDataSlice";
 import { HeaderClasses } from "../../imports/styleClasses";
 
-import { useEffect } from "react";
-import { Link } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
+import ProfileCard from "../ProfileCard";
 
 export default function HeaderAccountMenu() {
-  const dispatch = useDispatch();
-  const { name, avatar, title, userName } = useSelector(
-    (state) => state.userData
-  );
-
-  useEffect(() => {
-    dispatch(handleUserDataApi());
-  }, []);
+  const { name, avatar } = useSelector((state) => state.userData);
 
   return (
     <PopupState variant="popover" popupId="demo-popup-menu">
@@ -68,22 +59,7 @@ export default function HeaderAccountMenu() {
             anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
           >
             <MenuItem onClick={popupState.close}>
-              <Link
-                to={`/in/${userName}`}
-                className="flex items-center border-b pb-2"
-              >
-                <Avatar
-                  alt={name}
-                  src={avatar}
-                  sx={{ width: 70, height: 70 }}
-                  className="outline outline-white"
-                />
-
-                <div>
-                  <h4 className="font-semibold">{name}</h4>
-                  <p className="text-xs">{title}</p>
-                </div>
-              </Link>
+              <ProfileCard showName showTitle />
             </MenuItem>
             <MenuItem onClick={() => handleLogOut()} className="text-secondary">
               Sign Out

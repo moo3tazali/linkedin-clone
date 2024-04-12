@@ -16,6 +16,7 @@ import {
 } from "../../../imports/import";
 import LikeBtn from "./LikeBtn";
 import { PostLikes } from "./PostLikes";
+import Comments from "./Comments";
 
 const Posts = ({
   creatorUserName = "",
@@ -32,6 +33,7 @@ const Posts = ({
   isLiked,
 }) => {
   const [expanded, setExpanded] = useState(false);
+  const [showComments, setShowComments] = useState(false);
 
   const toggleExpanded = () => {
     setExpanded(!expanded);
@@ -115,7 +117,10 @@ const Posts = ({
 
           <div className="flex justify-between items-center mt-1 border-t px-2 lg:px-4 py-1">
             <LikeBtn postId={postId} isLiked={isLiked} />
-            <button className={PostsClasses.button}>
+            <button
+              onClick={() => setShowComments(true)}
+              className={PostsClasses.button}
+            >
               <CommentOutlinedIcon />
               <span className="ss:block hidden">Comment</span>
             </button>
@@ -128,6 +133,10 @@ const Posts = ({
               <span className="ss:block hidden">Send</span>
             </button>
           </div>
+        </div>
+        {/* POST COMMENTS */}
+        <div className={showComments ? "block" : "hidden"}>
+          <Comments postId={postId} />
         </div>
       </div>
     </>

@@ -5,7 +5,7 @@ import Posts from "./Posts";
 import StartNewPost from "./StartNewPost";
 import axios from "axios";
 import { useRender } from "../../../contexts/RenderContext";
-import moment from "moment";
+import { UpdatedAt } from "../../../hooks/UpdatedAt";
 
 const Feeds = () => {
   const [posts, setPosts] = useState([]);
@@ -16,7 +16,7 @@ const Feeds = () => {
 
   useEffect(() => {
     axios
-      .get("http://localhost:1337/api/get-posts?sort=desc", {
+      .get("http://localhost:1337/api/posts?sort=desc", {
         headers: {
           Authorization: "Bearer " + userToken,
         },
@@ -40,12 +40,12 @@ const Feeds = () => {
     const creatorTitle = post.creator.title;
     const creatorProfilePic = post.creator.profilePic
       ? post.creator.profilePic.url
-      : "";
+      : "/static/images/avatar/1.jpg";
     const postContent = post.text || "";
     const postMedia = post.media ? post.media.url : "";
     const postLikes = post.likes;
     const isLiked = post.isLiked;
-    const date = moment().from(post.createdAt, true);
+    const date = UpdatedAt(post.createdAt);
     return (
       <Posts
         key={postId}

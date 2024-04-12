@@ -11,7 +11,7 @@ const LikeBtn = ({ postId, isLiked }) => {
   function handleLikeClicked(postId) {
     if (!isLiked) {
       axios
-        .post(`http://localhost:1337/api/add-like/${postId}`, "", {
+        .post(`http://localhost:1337/api/posts/${postId}/likes`, "", {
           headers: { Authorization: "Bearer " + userToken },
         })
         .then(() => {
@@ -20,7 +20,7 @@ const LikeBtn = ({ postId, isLiked }) => {
     }
     if (isLiked) {
       axios
-        .delete(`http://localhost:1337/api/delete-like/${postId}`, {
+        .delete(`http://localhost:1337/api/likes/${postId}`, {
           headers: { Authorization: "Bearer " + userToken },
         })
         .then(() => {

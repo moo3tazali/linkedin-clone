@@ -1,70 +1,53 @@
-import { useEffect, useState } from "react";
-import { Avatar } from "@mui/material";
+import { useState } from "react";
+import { Avatar, CircularProgress } from "../../../imports/import";
 import ProfileCard from "../../ProfileCard";
 import { Link } from "react-router-dom";
-import axios from "axios";
-import { getUserToken } from "../../../hooks/handleAuth";
-import { UpdatedAt } from "../../../hooks/UpdatedAt";
+import { shortMomentFromX } from "../../../hooks/momentFromX";
+import { useComments, useCreateComment } from "../../../services/queries";
+import { useForm } from "react-hook-form";
 
 const Comments = ({ postId }) => {
-  const [commentInput, setCommentInput] = useState("");
-  const [comments, setComments] = useState([]);
   const [expanded, setExpanded] = useState(false);
-  const [renderNewComment, setRenderNewComment] = useState(false);
+  const { register, handleSubmit, watch, reset } = useForm();
+  const { data: comments } = useComments(postId);
+  const { isPending, mutate } = useCreateComment();
 
-  const userToken = getUserToken();
-
-  useEffect(() => {
-    try {
-      axios
-        .get(`http://localhost:1337/api/posts/${postId}/comments`, {
-          headers: { Authorization: "Bearer " + userToken },
-        })
-        .then((response) => setComments(response.data.data.results));
-    } catch (error) {
-      console.log(error);
-    }
-  }, [renderNewComment]);
-
-  const handleAddComment = (e) => {
-    e.preventDefault();
-    axios
-      .post(
-        `http://localhost:1337/api/comments`,
-        { text: commentInput, postId },
-        { headers: { Authorization: "Bearer " + userToken } }
-      )
-      .then((res) => {
-        const response = res.data;
-        setRenderNewComment((state) => !state);
-        setCommentInput("");
-      });
+  // HANDLERS
+  const handleAddComment = (data) => {
+    const commentDataToPost = { ...data, postId };
+    mutate(commentDataToPost);
+    reset();
   };
+
   return (
     <div className="px-4 py-4">
       {/* COMMENT FORM */}
       <div className="flex items-start">
         <ProfileCard avatarWidth={40} />
-        <form className="flex-1">
+        <form onSubmit={handleSubmit(handleAddComment)} className="flex-1">
           <input
-            value={commentInput}
-            onChange={(e) => setCommentInput(e.target.value)}
+            {...register("text")}
             type="text"
             placeholder="Add a comment..."
             className="w-full rounded-full px-4 py-2 border outline-gray-400"
           />
           <button
-            onClick={handleAddComment}
-            className={`font-semibold bg-primary text-white px-3 py-[2px] rounded-full mt-3 ${
-              commentInput ? "" : "hidden"
+            type="submit"
+            className={`flex items-center justify-center font-semibold bg-primary text-white px-3 py-[2px] rounded-full mt-3 ${
+              watch("text") || isPending ? "" : "hidden"
             }`}
+            disabled={isPending}
           >
-            Post
+            {isPending ? (
+              <CircularProgress size={24} sx={{ color: "white" }} />
+            ) : (
+              "Post"
+            )}
           </button>
         </form>
       </div>
       {/* COMMENTS */}
-      {comments.map((comment) => (
+      {comments?.map((comment) => (
         <div key={comment.id} className="mt-6 flex items-start gap-2">
           <div>
             <Link to={`/in/${comment.user.username}`}>
@@ -90,7 +73,7 @@ const Comments = ({ postId }) => {
                 </Link>
               </div>
               <div className="text-secondary text-xs ">
-                {UpdatedAt(comment.updatedAt)}
+                {shortMomentFromX(comment.updatedAt)}
               </div>
             </div>
             <p className="break-word text-linkedBlack my-2">

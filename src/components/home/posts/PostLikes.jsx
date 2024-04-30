@@ -1,63 +1,13 @@
-/* eslint-disable react/prop-types */
-import axios from "axios";
-import { useEffect, useState } from "react";
-import { getUserToken } from "../../../hooks/handleAuth";
+import { Fragment, useState } from "react";
+
+import { useLikes } from "../../../services/queries";
+import WhoLikePost from "./WhoLikePost";
 import { ThumbUpOffAltIcon, Avatar, Dialog } from "../../../imports/import";
-import { useRender } from "../../../contexts/RenderContext";
-import { Link } from "react-router-dom";
 
 export const PostLikes = ({ postLikes, postId }) => {
-  const [postLike, setPostLike] = useState([]);
   const [open, setOpen] = useState(false);
-  const { render } = useRender();
-  const userToken = getUserToken();
+  const { data: likes, error } = useLikes(postId);
 
-  let cancelAxiox = null;
-  useEffect(() => {
-    axios
-      .get(`http://localhost:1337/api/likes/${postId}`, {
-        headers: { Authorization: "Bearer " + userToken },
-        cancelToken: new axios.CancelToken((c) => {
-          cancelAxiox = c;
-        }),
-      })
-      .then((res) => {
-        setPostLike(res.data.data.results);
-      })
-      .catch((err) => err);
-
-    return () => {
-      cancelAxiox();
-    };
-  }, [render]);
-
-  const ShowPostLikes = postLike.map((like) => {
-    const fullName = like.user.fullName || like.user.username;
-    const userName = like.user.username;
-    const userTitle = like.user.title || "";
-    const userAvatar = like.user.ProfilePic || "";
-
-    return (
-      <Link
-        to={`/in/${userName}`}
-        key={like.id}
-        className="flex items-center gap-3 px-6 py-1 cursor-pointer"
-      >
-        <Avatar
-          alt={fullName}
-          src={userAvatar}
-          sx={{ width: 48, height: 48 }}
-          className="outline outline-white"
-        />
-        <div className=" border-b flex-1 py-4 group">
-          <h1 className="text-sm font-semibold">{fullName}</h1>
-          <h2 className="text-secondary text-xs group-hover:underline">
-            {userTitle}
-          </h2>
-        </div>
-      </Link>
-    );
-  });
   return (
     <>
       <div
@@ -88,7 +38,11 @@ export const PostLikes = ({ postLikes, postId }) => {
 
         <hr className="" />
 
-        {ShowPostLikes}
+        {likes?.map((like) => (
+          <Fragment key={like.id}>
+            <WhoLikePost like={like} error={error} />
+          </Fragment>
+        ))}
       </Dialog>
     </>
   );

@@ -1,101 +1,23 @@
 /* eslint-disable react/jsx-key */
-import { useEffect, useState } from "react";
-import { getUserToken } from "../../../hooks/handleAuth";
+import { Fragment } from "react";
 import Posts from "./Posts";
-import StartNewPost from "./StartNewPost";
-import axios from "axios";
-import { useRender } from "../../../contexts/RenderContext";
-import { UpdatedAt } from "../../../hooks/UpdatedAt";
+import PostIsLoading from "../../loaders/PostIsLoading";
+import { usePosts } from "../../../services/queries";
 
 const Feeds = () => {
-  const [posts, setPosts] = useState([]);
-  const userToken = getUserToken();
-  const { render } = useRender();
+  const { data: posts, error, isError, isLoading } = usePosts();
 
-  let cancelAxios = null;
+  if (isLoading) <PostIsLoading num={3} />;
+  if (isError) console.log(error.message);
 
-  useEffect(() => {
-    axios
-      .get("http://localhost:1337/api/posts?sort=desc", {
-        headers: {
-          Authorization: "Bearer " + userToken,
-        },
-        cancelToken: new axios.CancelToken((c) => {
-          cancelAxios = c;
-        }),
-      })
-      .then((response) => setPosts(response.data.data.results))
-      .catch(() => "");
-
-    return () => {
-      cancelAxios();
-    };
-  }, [render]);
-
-  const showPosts = posts.map((post) => {
-    // if (post.media != null) {
-    const postId = post.id;
-    const creatorUserName = post.creator.username;
-    const creatorName = post.creator.fullName || post.creator.username;
-    const creatorTitle = post.creator.title;
-    const creatorProfilePic = post.creator.profilePic
-      ? post.creator.profilePic.url
-      : "/static/images/avatar/1.jpg";
-    const postContent = post.text || "";
-    const postMedia = post.media ? post.media.url : "";
-    const postLikes = post.likes;
-    const isLiked = post.isLiked;
-    const date = UpdatedAt(post.createdAt);
-    return (
-      <Posts
-        key={postId}
-        postId={postId}
-        creatorUserName={creatorUserName}
-        creatorName={creatorName}
-        creatorTitle={creatorTitle}
-        creatorAvatar={creatorProfilePic}
-        postContent={postContent}
-        postMedia={postMedia}
-        postLikes={postLikes}
-        isLiked={isLiked}
-        postComments={0}
-        postReposts={0}
-        date={date + " ago"}
-      />
-    );
-
-    // }
-    // else {
-    //   const postId = post.id;
-    //   const creatorName = post.creator.fullName;
-    //   const creatorTitle = post.creator.title;
-    //   const creatorProfilePic = post.creator.profilePic.url;
-    //   const postContent = post.text;
-    //   const postLikes = post.likes;
-
-    //   return (
-    //     <Posts
-    //       key={postId}
-    //       creatorName={creatorName}
-    //       creatorTitle={creatorTitle}
-    //       creatorAvatar={creatorProfilePic}
-    //       postContent={postContent}
-    //       postMedia={""}
-    //       postLikes={postLikes}
-    //       postComments={0}
-    //       postReposts={0}
-    //     />
-    //   );
-    // }
-  });
   return (
-    <div className="md:col-span-6 col-span-8">
-      <StartNewPost />
-
-      <hr className="mt-4 border-gray-300" />
-
-      {showPosts}
-    </div>
+    <>
+      {posts?.map((post) => (
+        <Fragment key={post.id}>
+          <Posts post={post} />
+        </Fragment>
+      ))}
+    </>
   );
 };
 

@@ -29,8 +29,18 @@ import WorkIcon from "@mui/icons-material/Work";
 import TextsmsRoundedIcon from "@mui/icons-material/TextsmsRounded";
 import Badge from "@mui/material/Badge";
 import NotificationsIcon from "@mui/icons-material/Notifications";
+import Card from "@mui/material/Card";
+import CardHeader from "@mui/material/CardHeader";
+import CardContent from "@mui/material/CardContent";
+import Skeleton from "@mui/material/Skeleton";
+import EditIcon from "@mui/icons-material/Edit";
 
 export {
+  EditIcon,
+  Card,
+  CardHeader,
+  CardContent,
+  Skeleton,
   LinkedInIcon,
   SearchIcon,
   HomeIcon,

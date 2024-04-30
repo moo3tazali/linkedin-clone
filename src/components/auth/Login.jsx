@@ -9,8 +9,8 @@ const Login = () => {
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
   const [signInForm, setSignInForm] = useState({
-    email: "",
-    password: "",
+    email: "test@gmail.com",
+    password: "159159",
     isRemembered: false,
   });
 

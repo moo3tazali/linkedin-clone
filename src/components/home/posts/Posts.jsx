@@ -17,50 +17,41 @@ import {
 import LikeBtn from "./LikeBtn";
 import { PostLikes } from "./PostLikes";
 import Comments from "./Comments";
+import { momentFromX } from "../../../hooks/momentFromX";
 
-const Posts = ({
-  creatorUserName = "",
-  creatorName = "",
-  creatorTitle = "",
-  creatorAvatar = "",
-  postContent = "",
-  postMedia = "",
-  postLikes = 0,
-  postComments = 0,
-  postReposts = 0,
-  date = "",
-  postId,
-  isLiked,
-}) => {
+const Posts = ({ post }) => {
   const [expanded, setExpanded] = useState(false);
   const [showComments, setShowComments] = useState(false);
-
-  const toggleExpanded = () => {
-    setExpanded(!expanded);
-  };
-
+  const { id, creator, text, media, likes, comments, isLiked, createdAt } =
+    post;
   return (
     <>
       <div className={PostsClasses.postBox}>
         {/* POST HEADER */}
         <div className="flex justify-between items-start px-4 pt-4">
           <div className="flex items-center gap-3">
-            <Link to={`in/${creatorUserName}`}>
+            <Link to={`in/${creator.username}`}>
               <Avatar
-                alt={creatorName}
-                src={creatorAvatar}
+                alt={creator.username}
+                src={
+                  creator.profilePic
+                    ? creator.profilePic.url
+                    : "/static/images/avatar/1.jpg"
+                }
                 sx={{ width: 48, height: 48 }}
                 className="outline outline-white"
               />
             </Link>
             <div>
-              <Link to={`in/${creatorUserName}`}>
+              <Link to={`in/${creator.username}`}>
                 <h1 className="text-sm font-semibold hover:underline">
-                  {creatorName}
+                  {creator.fullName || creator.username}
                 </h1>
               </Link>
-              <h2 className="text-secondary text-xs">{creatorTitle}</h2>
-              <span className="text-xs text-secondary">{date}</span>
+              <h2 className="text-secondary text-xs">{creator.title}</h2>
+              <span className="text-xs text-secondary">
+                {momentFromX(createdAt)}
+              </span>
               <FiberManualRecordIcon
                 sx={{ fontSize: "5px", margin: "0 2px" }}
                 className="text-secondary"
@@ -85,38 +76,38 @@ const Posts = ({
         {/* POST CONTENT */}
         <div className="max-w-full my-2">
           <p className="break-word text-sm text-linkedBlack my-2 px-4">
-            {expanded ? postContent : postContent.substring(0, 150)}
-            {postContent.length > 150 && (
+            {expanded ? text : text.substring(0, 150)}
+            {text.length > 150 && (
               <button
                 className={`px-2 pt-2 font-semibold text-sm text-secondary ${
                   expanded ? "hidden" : ""
                 }`}
-                onClick={toggleExpanded}
+                onClick={() => setExpanded(!expanded)}
               >
                 {expanded ? "" : "...See more"}
               </button>
             )}
           </p>
 
-          <img src={postMedia} alt="" className=" max-w-full object-contain" />
+          <img src={media?.url} alt="" className=" max-w-full object-contain" />
         </div>
 
         {/* POST FOOTER */}
         <div className="mt-2">
           <div className="flex items-center justify-between px-4">
-            <PostLikes postLikes={postLikes} postId={postId} />
+            <PostLikes postLikes={likes} postId={id} />
             <div className="text-xs text-secondary">
-              <span>{postComments} comments</span>
+              <span>{comments} comments</span>
               <FiberManualRecordIcon
                 sx={{ fontSize: "5px", margin: "0 4px" }}
                 className="text-secondary"
               />
-              <span>{postReposts} reposts</span>
+              <span>{0} reposts</span>
             </div>
           </div>
 
           <div className="flex justify-between items-center mt-1 border-t px-2 lg:px-4 py-1">
-            <LikeBtn postId={postId} isLiked={isLiked} />
+            <LikeBtn postId={id} isLiked={isLiked} />
             <button
               onClick={() => setShowComments(true)}
               className={PostsClasses.button}
@@ -136,7 +127,7 @@ const Posts = ({
         </div>
         {/* POST COMMENTS */}
         <div className={showComments ? "block" : "hidden"}>
-          <Comments postId={postId} />
+          <Comments postId={id} />
         </div>
       </div>
     </>

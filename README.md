@@ -55,14 +55,19 @@ This project is created solely for practice and learning purposes. It is not aff
 - Like/unlike posts
 - Add/remove comments
 
+## Backend
+
+This project uses Strapi as the backend, collaborated with eng.MohamedOsamaDev. You can find the backend project repository [here](https://github.com/MohamedOsamaDev/linkedin).
+
 ## License
 
 This project is licensed under the [MIT License](LICENSE).
 
 ## Technologies Used
 
-- React
 - Vite
+- React
+- React Router
 - React Hook Form
 - Zod
 - Material-UI

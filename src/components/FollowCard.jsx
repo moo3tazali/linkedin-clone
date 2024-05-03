@@ -27,9 +27,3 @@ const FollowCard = ({ user }) => {
 };
 
 export default FollowCard;
-
-FollowCard.defaultProps = {
-  name: "?",
-  pic: "/static/images/avatar/1.jpg",
-  title: " ",
-};

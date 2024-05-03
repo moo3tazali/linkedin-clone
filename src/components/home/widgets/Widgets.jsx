@@ -21,17 +21,14 @@ const Widgets = () => {
         />
       </div>
       {users?.map(
-        (user) =>
-          user.id !== userId && (
+        (user, index) =>
+          user.id !== userId &&
+          index <= 3 && (
             <Fragment key={user.id}>
               <FollowCard user={user} />
             </Fragment>
           )
       )}
-      {/* <FollowCard name="Moataz Ali" title="FrontEnd Developer" />
-      <FollowCard name="Hassan Amin" title="Architecture Engineer" />
-      <FollowCard name="Ahmed Sror" title="Medical Representative" /> */}
-
       <div className="text-sm font-semibold text-secondary mt-5 px-2 rounded transition duration-300 hover:bg-background w-fit cursor-pointer">
         <span>View all recommendations</span>
         <ArrowForwardIcon />

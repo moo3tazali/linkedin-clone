@@ -57,10 +57,8 @@ const UpdateProfilePic = ({ currentProfile }) => {
         fullWidth={true}
         maxWidth="md"
       >
-        <div className={`flex justify-between items-center p-4 "bg-[#1B1F23]"`}>
-          <div className="text-xl text-linkedBlack font-semibold text-white">
-            Profile photo
-          </div>
+        <div className={`flex justify-between items-center p-4 bg-[#1B1F23]`}>
+          <div className="text-xl font-semibold text-white">Profile photo</div>
           <button
             onClick={() => setOpen(false)}
             className="font-semibold transition duration-300 hover:bg-gray-200 text-gray-600 text-2xl rounded-full w-11 h-11 flex items-center justify-center"

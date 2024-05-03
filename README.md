@@ -21,7 +21,7 @@ This project is a clone of LinkedIn built using React with Vite as the bundler. 
 ## Installation
 
 1. Clone the repository:
-   git clone https://github.com/moo3tazali/linkedin-clone.git
+   git clone `https://github.com/moo3tazali/linkedin-clone.git`
 2. Navigate to the project directory:
    cd linkedin-clone
 3. Install dependencies:

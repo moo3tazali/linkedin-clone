@@ -18,12 +18,22 @@ import LikeBtn from "./LikeBtn";
 import { PostLikes } from "./PostLikes";
 import Comments from "./Comments";
 import { momentFromX } from "../../../hooks/momentFromX";
+import PostIMGs from "./PostIMGs";
+import { useSelector } from "react-redux";
+import { useDeletePost } from "../../../services/queries";
+import { checkInputDirection } from "../../../hooks/checkInputDirection";
 
 const Posts = ({ post }) => {
   const [expanded, setExpanded] = useState(false);
   const [showComments, setShowComments] = useState(false);
   const { id, creator, text, media, likes, comments, isLiked, createdAt } =
     post;
+  const { mutate: deletePostMutate } = useDeletePost();
+  const { userId } = useSelector((state) => state.userData);
+
+  const handleDeletePost = (id) => {
+    deletePostMutate(id);
+  };
   return (
     <>
       <div className={PostsClasses.postBox}>
@@ -62,20 +72,26 @@ const Posts = ({ post }) => {
 
           <div className="flex items-center">
             <PopupMenu />
-            <IconButton
-              id="demo-customized-button"
-              aria-controls={open ? "demo-customized-menu" : undefined}
-              aria-haspopup="true"
-              aria-expanded={open ? "true" : undefined}
-            >
-              <CloseIcon className="text-secondary" />
-            </IconButton>
+            {creator.id === userId && (
+              <IconButton
+                onClick={() => handleDeletePost(id)}
+                id="demo-customized-button"
+                aria-controls={open ? "demo-customized-menu" : undefined}
+                aria-haspopup="true"
+                aria-expanded={open ? "true" : undefined}
+              >
+                <CloseIcon className="text-secondary" />
+              </IconButton>
+            )}
           </div>
         </div>
 
         {/* POST CONTENT */}
         <div className="max-w-full my-2">
-          <p className="break-word text-sm text-linkedBlack my-2 px-4">
+          <p
+            dir={checkInputDirection(text)}
+            className="break-word text-sm text-linkedBlack my-2 px-4"
+          >
             {expanded ? text : text.substring(0, 150)}
             {text.length > 150 && (
               <button
@@ -88,8 +104,15 @@ const Posts = ({ post }) => {
               </button>
             )}
           </p>
-
-          <img src={media?.url} alt="" className=" max-w-full object-contain" />
+          <div className="grid grid-cols-12 gap-1">
+            {media?.map((img) => (
+              <PostIMGs
+                key={img.id}
+                imageUrl={img.url}
+                mediaLength={media.length}
+              />
+            ))}
+          </div>
         </div>
 
         {/* POST FOOTER */}

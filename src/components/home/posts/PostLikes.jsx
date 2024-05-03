@@ -10,7 +10,8 @@ export const PostLikes = ({ postLikes, postId }) => {
 
   return (
     <>
-      <div
+      <button
+        disabled={!postLikes}
         onClick={() => setOpen(true)}
         className="flex items-center gap-1 cursor-pointer hover:text-primary hover:underline"
       >
@@ -18,7 +19,7 @@ export const PostLikes = ({ postLikes, postId }) => {
           <ThumbUpOffAltIcon sx={{ fontSize: "10px" }} />
         </Avatar>
         <span className="text-xs text-secondary">{postLikes}</span>
-      </div>
+      </button>
 
       <Dialog
         open={open}

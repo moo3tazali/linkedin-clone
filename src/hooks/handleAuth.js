@@ -1,9 +1,9 @@
 import Cookies from "js-cookie";
 
 // STORE USER IN COOKIES
-export const storeUser = (token, isRemembered) => {
+export const storeUser = (token, isRemember) => {
   Cookies.set("user", token, {
-    expires: isRemembered ? 30 : 2,
+    expires: isRemember ? 30 : 2,
     secure: true,
     sameSite: "Strict",
     path: "/",

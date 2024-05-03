@@ -1,9 +1,7 @@
 import { Avatar } from "@mui/material";
-import { useEffect } from "react";
 
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
-import { handleUserDataApi } from "../store/features/userDataSlice";
 
 const ProfileCard = ({
   showCover = false,
@@ -11,19 +9,18 @@ const ProfileCard = ({
   showTitle = false,
   avatarWidth = 48,
 }) => {
-  const dispatch = useDispatch();
   const { name, avatar, title, cover, userName } = useSelector(
     (state) => state.userData
   );
 
-  useEffect(() => {
-    dispatch(handleUserDataApi());
-  }, [avatar, cover, title, name]);
-
   return (
     <>
       <div className={showCover ? "block" : "hidden"}>
-        <img src={cover} alt="cover" className="w-full object-contain" />
+        <img
+          src={cover}
+          alt="cover"
+          className="w-full object-cover max-h-[150px] sm:max-h-[75px]"
+        />
       </div>
       <div
         className={showCover ? "" : "flex items-center justify-center gap-3"}

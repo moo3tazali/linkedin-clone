@@ -14,7 +14,7 @@ const WhoLikePost = ({ like, error }) => {
     >
       <Avatar
         alt={user.username}
-        src={user.ProfilePic || "/static/images/avatar/1.jpg"}
+        src={user.profilePic?.url || "/static/images/avatar/1.jpg"}
         sx={{ width: 48, height: 48 }}
         className="outline outline-white"
       />
@@ -23,7 +23,7 @@ const WhoLikePost = ({ like, error }) => {
           {user.fullName || user.username}
         </h1>
         <h2 className="text-secondary text-xs group-hover:underline">
-          {user.title}
+          {user.title || ""}
         </h2>
       </div>
     </Link>

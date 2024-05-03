@@ -2,8 +2,15 @@ import FollowCard from "../../FollowCard";
 import TriggersTooltips from "../../TriggersTooltips";
 import AssignmentLateIcon from "@mui/icons-material/AssignmentLate";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
+import { useProfile } from "../../../services/queries";
+
+import { useSelector } from "react-redux";
+import { Fragment } from "react";
 
 const Widgets = () => {
+  const { userId } = useSelector((state) => state.userData);
+  const { data: users } = useProfile();
+
   return (
     <div className="bg-white rounded-lg p-3 col-span-3 md:block hidden">
       <div className="flex justify-between items-center">
@@ -13,9 +20,17 @@ const Widgets = () => {
           icon={<AssignmentLateIcon sx={{ fontSize: "large" }} />}
         />
       </div>
-      <FollowCard name="Moataz Ali" title="FrontEnd Developer" />
+      {users?.map(
+        (user) =>
+          user.id !== userId && (
+            <Fragment key={user.id}>
+              <FollowCard user={user} />
+            </Fragment>
+          )
+      )}
+      {/* <FollowCard name="Moataz Ali" title="FrontEnd Developer" />
       <FollowCard name="Hassan Amin" title="Architecture Engineer" />
-      <FollowCard name="Ahmed Sror" title="Medical Representative" />
+      <FollowCard name="Ahmed Sror" title="Medical Representative" /> */}
 
       <div className="text-sm font-semibold text-secondary mt-5 px-2 rounded transition duration-300 hover:bg-background w-fit cursor-pointer">
         <span>View all recommendations</span>

@@ -12,7 +12,7 @@ export const AuthFormClasses = {
   p: "text-xs text-gray-600 hover:text-indigo-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 text-center mt-5",
 
   button:
-    "w-full flex justify-center items-center gap-3 py-3 px-4 border border-transparent rounded-full shadow-sm font-medium text-white bg-primary hover:bg-blue-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500",
+    "w-full flex justify-center items-center gap-3 py-3 px-4 border border-transparent rounded-full shadow-sm font-medium text-white bg-primary hover:bg-blue-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:bg-secondary disabled:cursor-not-allowed",
 
   span: "text-indigo-500 hover:text-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 font-semibold",
 };

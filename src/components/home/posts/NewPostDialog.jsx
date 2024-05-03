@@ -1,8 +1,4 @@
 import { useRef, useState } from "react";
-import axios from "axios";
-
-import { getUserToken } from "../../../hooks/handleAuth";
-import { useRender } from "../../../contexts/RenderContext";
 import {
   MmsIcon,
   IconButton,
@@ -11,43 +7,44 @@ import {
   Dialog,
 } from "../../../imports/import";
 import ProfileCard from "../../ProfileCard";
+import { useCreatePost } from "../../../services/queries";
+import { checkInputDirection } from "../../../hooks/checkInputDirection";
 
 export default function NewPostDialog() {
   const [open, setOpen] = useState(false);
   const [postContent, setPostContent] = useState("");
   const [selectedFile, setSelectedFile] = useState([]);
-  const [isLoading, setIsLoading] = useState(false);
+  const [inputDirection, setInputDirection] = useState("ltr");
   const mediaIconRef = useRef();
-  const { callRender } = useRender();
-  const userToken = getUserToken();
+  const { mutateAsync, isPending } = useCreatePost();
 
+  // HANDLE OPEN NEW POST MODAL
+  function openNewPostModal() {
+    setOpen(true);
+  }
   // HANDLE POSTING NEW POST
   async function handlePostClicked() {
-    setIsLoading(true);
-    const formData = new FormData();
-    selectedFile.map((file) => {
+    if (selectedFile.length) {
+      const formData = new FormData();
       formData.append("text", postContent);
-      formData.append("media", file);
-    });
-
-    try {
-      await axios.post("http://localhost:1337/api/posts", formData, {
-        headers: {
-          Authorization: "Bearer " + userToken,
-        },
+      selectedFile.map((file) => {
+        formData.append("media", file);
       });
-    } catch (error) {
-      console.log(error);
-      setIsLoading(false);
+      await mutateAsync(formData);
+    } else {
+      await mutateAsync({ text: postContent });
     }
-    setIsLoading(false);
     setOpen(false);
     setSelectedFile([]);
     setPostContent("");
-    callRender();
   }
 
   // HANDLE ON CHANGE FOR FILE INPUT
+  function handleOnChangeText(e) {
+    const text = e.target.value;
+    setPostContent(text);
+    setInputDirection(checkInputDirection(text));
+  }
   function handleFilesOnChange(e) {
     const allSelectedFiles = e.target.files;
     let allSelectedFilesArray = [];
@@ -60,7 +57,7 @@ export default function NewPostDialog() {
   // HANDLE DELETE THE SELECTED IMAGE BEFORE POSTING
   function handleDeleteImage(index) {
     setSelectedFile(
-      selectedFile.filter((f, i) => {
+      selectedFile.filter((_, i) => {
         return i !== index;
       })
     );
@@ -88,7 +85,7 @@ export default function NewPostDialog() {
   return (
     <>
       <button
-        onClick={() => setOpen(true)}
+        onClick={openNewPostModal}
         className="w-full border border-gray-400 p-3 flex text-secondary text-sm font-semibold rounded-full duration-300 transition-all hover:bg-background"
       >
         Start a post
@@ -111,12 +108,13 @@ export default function NewPostDialog() {
           </div>
 
           <textarea
+            dir={inputDirection}
             className={`resize-none w-full placeholder:text-gray-700 placeholder:text-[20px] outline-none px-6 py-2 ${
               selectedFile.length != 0 ? "" : " min-h-[400px]"
             }`}
             placeholder="What do you want to talk about?"
             value={postContent}
-            onChange={(e) => setPostContent(e.target.value)}
+            onChange={handleOnChangeText}
           ></textarea>
 
           <div
@@ -149,20 +147,27 @@ export default function NewPostDialog() {
                 ref={mediaIconRef}
                 className="hidden"
                 multiple
+                maxLength={4}
               />
             </div>
           </div>
           <div className="flex items-center gap-3">
-            {isLoading ? (
+            {isPending ? (
               <CircularProgress sx={{ color: "primary" }} size={22} />
             ) : (
               ""
+            )}
+            {selectedFile.length > 4 && (
+              <span className="text-sm font-semibold text-red-700 tracking-tighter">
+                You can select only up to 4 files.
+              </span>
             )}
             <button
               onClick={handlePostClicked}
               className="font-semibold bg-primary text-white px-4 py-1 rounded-full disabled:bg-gray-200 disabled:text-gray-400 disabled:cursor-not-allowed"
               disabled={
-                postContent.length > 10 || selectedFile.length != 0
+                postContent.length > 5 ||
+                (selectedFile.length != 0 && selectedFile.length <= 4)
                   ? false
                   : true
               }

@@ -1,7 +1,8 @@
 import axios from "axios";
 import { getUserToken } from "../hooks/handleAuth";
 
-const userToken = getUserToken();
+const userToken = getUserToken(); 
+
 const baseURL = "http://localhost:1337/api";
 
 const axiosInstance = axios.create({

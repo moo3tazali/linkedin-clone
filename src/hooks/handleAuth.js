@@ -20,5 +20,4 @@ export const handleLogOut = () => {
   Cookies.remove("user");
   location.pathname = "/";
 };
-
 // handleLogOut()

@@ -1,7 +1,7 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 import { getUserToken } from "../../hooks/handleAuth";
-
+// redux createAsyncThunk
 export const handleUserDataApi = createAsyncThunk("userDataApi", async () => {
   const userToken = getUserToken();
   const response = await axios.get(
@@ -12,7 +12,6 @@ export const handleUserDataApi = createAsyncThunk("userDataApi", async () => {
       },
     }
   );
-  // console.log(response.data);
   const userId = response.data.id;
   const name = response.data.fullName || response.data.username;
   const userName = response.data.username;
@@ -24,7 +23,7 @@ export const handleUserDataApi = createAsyncThunk("userDataApi", async () => {
   const coverId = response.data.coverPic?.id || "";
   return { name, title, avatar, cover, userId, userName, coverId };
 });
-
+// redux local reducers
 const initialState = {
   name: "",
   title: "",

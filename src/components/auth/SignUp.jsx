@@ -26,14 +26,16 @@ const SignUp = () => {
     setError,
   } = useForm({ resolver: zodResolver(SignUpSchema), mode: "onChange" });
 
-  async function onSubmit(data) {
+  const onSubmit = async (data) => {
     try {
       await signUpMutate(data);
     } catch (error) {
       setError("root", { message: error.response.data.error.message });
     }
-  }
+  };
 
+
+  
   return (
     <div className="p-4 rounded-lg relative">
       <Link to="/">

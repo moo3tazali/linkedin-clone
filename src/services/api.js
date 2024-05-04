@@ -1,7 +1,7 @@
 import axios from "axios";
-import { getUserToken } from "../hooks/handleAuth";
+import { getUserToken } from "../utils/handleAuth";
 
-const userToken = getUserToken(); 
+const userToken = getUserToken();
 
 const baseURL = "http://localhost:1337/api";
 

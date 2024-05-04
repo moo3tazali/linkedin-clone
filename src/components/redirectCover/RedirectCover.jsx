@@ -1,14 +1,12 @@
 import { Navigate } from "react-router-dom";
-import "./redirectCover.css";
-import Spinner from "../spinner/spinner";
-const RedirectCover = ({ next = '/', logeddOut = true }) => {
-    return (
-        <div className="RedirectCover">
-            <Spinner />
-            <h1>loading ...</h1>
-            {logeddOut ? <Navigate to={next?.toString()} /> : ""}
-        </div>
-    );
+import LoadingPage from "../loaders/LoadingPage";
+const RedirectCover = ({ next = "/", loggedOut = true }) => {
+  return (
+    <>
+      <LoadingPage />
+      {loggedOut && <Navigate to={next?.toString()} />}
+    </>
+  );
 };
 
 export default RedirectCover;

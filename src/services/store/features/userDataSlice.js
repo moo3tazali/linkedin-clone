@@ -5,7 +5,7 @@ import { getUserToken } from "../../../utils/handleAuth";
 export const handleUserDataApi = createAsyncThunk("userDataApi", async () => {
   const userToken = getUserToken();
   const response = await axios.get(
-    "http://localhost:1337/api/users/me?populate=*",
+    "https://linkedin-8qzg.onrender.com/api/users/me?populate=*",
     {
       headers: {
         Authorization: "Bearer " + userToken,

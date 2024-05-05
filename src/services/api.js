@@ -3,7 +3,7 @@ import { getUserToken } from "../utils/handleAuth";
 
 const userToken = getUserToken();
 
-const baseURL = "http://localhost:1337/api";
+const baseURL = "https://linkedin-8qzg.onrender.com/api";
 
 const axiosInstance = axios.create({
   baseURL,
@@ -49,10 +49,10 @@ export const deleteComment = async (id) =>
 // LIKES API
 
 export const getLikes = async (postID) =>
-  (await axiosInstance.get(`likes/${postID}`)).data.data.results;
+  (await axiosInstance.get(`posts/${postID}/likes`)).data.data.results;
 
 export const addLike = async (postID) =>
-  await axiosInstance.post(`posts/${postID}/likes`);
+  await axiosInstance.post(`posts/${postID}/add-like`);
 
 export const removeLike = async (postID) =>
   await axiosInstance.delete(`likes/${postID}`);

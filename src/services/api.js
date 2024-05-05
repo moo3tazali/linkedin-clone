@@ -19,12 +19,9 @@ export const register = async (data) =>
   (await axiosInstance.post("auth/local/register", data)).data;
 
 // POSTS API
-export const getPosts = async (pageParam, limit = 6) =>
-  (
-    await axiosInstance.get(
-      `posts?sort=desc&page=${pageParam + 1}&pageSize=${limit}`
-    )
-  ).data.data.results;
+export const getPosts = async (pageParam) =>
+  (await axiosInstance.get(`posts?sort=desc&page=${pageParam + 1}`)).data.data
+    .results;
 
 export const createPost = async (data) =>
   await axiosInstance.post("posts", data);

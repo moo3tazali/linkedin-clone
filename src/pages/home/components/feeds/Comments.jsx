@@ -15,6 +15,7 @@ import {
   useCreateComment,
   useDeleteComment,
 } from "../../../../hooks/queries";
+import { checkInputDirection } from "../../../../utils/checkInputDirection";
 
 const Comments = ({ postId }) => {
   const [expanded, setExpanded] = useState(false);
@@ -121,7 +122,10 @@ const Comments = ({ postId }) => {
                       )}
                     </div>
                   </div>
-                  <p className="break-word text-linkedBlack my-2">
+                  <p
+                    dir={checkInputDirection(comment.text)}
+                    className="break-word text-linkedBlack my-2"
+                  >
                     {expanded ? comment.text : comment.text.substring(0, 150)}
                     {comment.text.length > 150 && (
                       <button

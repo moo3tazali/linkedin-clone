@@ -16,7 +16,7 @@ export default function NewPostDialog() {
   const [selectedFile, setSelectedFile] = useState([]);
   const [inputDirection, setInputDirection] = useState("ltr");
   const mediaIconRef = useRef();
-  const { mutateAsync, isPending } = useCreatePost();
+  const { mutateAsync, isPending, error, isError } = useCreatePost();
 
   // HANDLE OPEN NEW POST MODAL
   function openNewPostModal() {
@@ -153,6 +153,11 @@ export default function NewPostDialog() {
             </div>
           </div>
           <div className="flex items-center gap-3">
+            {isError && (
+              <span className="text-sm font-semibold text-red-700 tracking-tighter">
+                {error?.response?.data?.error?.message}
+              </span>
+            )}
             {isPending ? (
               <CircularProgress sx={{ color: "primary" }} size={22} />
             ) : (

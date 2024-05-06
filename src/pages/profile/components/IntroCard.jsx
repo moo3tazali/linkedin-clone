@@ -7,15 +7,13 @@ import UpdateProfilePic from "./UpdateProfilePic";
 import { useProfile } from "../../../hooks/queries";
 import EditIntro from "./EditIntro";
 import { Avatar } from "@mui/material";
+import defaultCoverPic from "../../../assets/defaultCover.png";
 
 const IntroCard = () => {
   const { userId } = useSelector((state) => state.userData);
   const location = useLocation();
   const currentPath = location.pathname.split("/").pop();
   const { data: users } = useProfile();
-
-  const defaultCoverPic =
-    "https://res.cloudinary.com/dlpkoketm/image/upload/v1711390852/Screenshot_2024_03_25_201913_1babd8460d.png";
 
   return (
     <>

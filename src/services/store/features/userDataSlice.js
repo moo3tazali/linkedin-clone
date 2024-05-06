@@ -1,6 +1,8 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
-import { getUserToken } from "../../../utils/handleAuth";
+import { getUserToken, handleLogOut } from "../../../utils/handleAuth";
+import defaultCoverPic from "../../../assets/defaultCover.png";
+
 // redux createAsyncThunk
 export const handleUserDataApi = createAsyncThunk("userDataApi", async () => {
   const userToken = getUserToken();
@@ -17,9 +19,7 @@ export const handleUserDataApi = createAsyncThunk("userDataApi", async () => {
   const userName = response.data.username;
   const title = response.data.title || "";
   const avatar = response.data.profilePic?.url || "";
-  const cover =
-    response.data.coverPic?.url ||
-    "https://res.cloudinary.com/dlpkoketm/image/upload/v1711390852/Screenshot_2024_03_25_201913_1babd8460d.png";
+  const cover = response.data.coverPic?.url || defaultCoverPic;
   const coverId = response.data.coverPic?.id || "";
   return { name, title, avatar, cover, userId, userName, coverId };
 });
@@ -46,6 +46,7 @@ export const userDataSlice = createSlice({
       })
       .addCase(handleUserDataApi.rejected, (state) => {
         state.isLoading = false;
+        handleLogOut();
       })
       .addCase(handleUserDataApi.fulfilled, (state, action) => {
         state.name = action.payload.name;

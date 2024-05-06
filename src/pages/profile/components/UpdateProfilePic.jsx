@@ -108,6 +108,7 @@ const UpdateProfilePic = ({ currentProfile }) => {
               Change photo
             </button>
             <button
+              disabled={isPending}
               onClick={handleUpdateProfilePic}
               className="bg-primary text-white px-4 py-1 rounded-full disabled:bg-gray-200 disabled:text-gray-400 disabled:cursor-not-allowed transition-all hover:bg-primary/70"
             >

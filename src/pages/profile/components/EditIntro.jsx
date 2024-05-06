@@ -161,6 +161,7 @@ const EditIntro = () => {
                 ""
               )}
               <button
+                disabled={isPending}
                 type="submit"
                 className="bg-primary text-white px-4 py-1 rounded-full disabled:bg-gray-200 disabled:text-gray-400 disabled:cursor-not-allowed transition-all hover:bg-blue-900"
               >

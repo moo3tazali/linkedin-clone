@@ -3,8 +3,8 @@ import { PostsClasses } from "../../../../imports/styleClasses";
 import { useAddLike, useRemoveLike } from "../../../../hooks/queries";
 
 const LikeBtn = ({ postId, isLiked }) => {
-  const { mutate: add } = useAddLike();
-  const { mutate: remove } = useRemoveLike();
+  const { mutate: add, isPending: isPendingAdd } = useAddLike();
+  const { mutate: remove, isPending: isPendingRemove } = useRemoveLike();
 
   function handleLikeClicked(postId) {
     if (!isLiked) {
@@ -18,6 +18,7 @@ const LikeBtn = ({ postId, isLiked }) => {
   return (
     <>
       <button
+        disabled={isPendingAdd || isPendingRemove}
         onClick={() => handleLikeClicked(postId)}
         className={`${PostsClasses.button} ${
           isLiked ? "text-primary" : "text-secondary"

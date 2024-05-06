@@ -102,11 +102,14 @@ const Posts = ({ post }) => {
           </p>
           <div className="grid grid-cols-12 gap-1">
             {media?.map((img) => (
-              <PostIMGs
+              <div
                 key={img.id}
-                imageUrl={img.url}
-                mediaLength={media.length}
-              />
+                className={`max-h-[500px] w-full bg-red-300 ${
+                  media.length > 1 ? "col-span-6" : "col-span-12"
+                }`}
+              >
+                <PostIMGs imageUrl={img.url} />
+              </div>
             ))}
           </div>
         </div>

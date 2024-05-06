@@ -18,5 +18,5 @@ export const getUserToken = () => {
 // HANDLE LOGOUT
 export const handleLogOut = () => {
   Cookies.remove("user");
-  location.pathname = "/";
+  location.pathname = "/linkedin-clone/";
 };

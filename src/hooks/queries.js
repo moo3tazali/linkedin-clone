@@ -30,7 +30,7 @@ export function useLogin() {
     onError: (error) => console.log(error),
     onSuccess: ({ jwt }, { isRemember }) => {
       storeUser(jwt, isRemember);
-      location.pathname = "/";
+      location.pathname = "/linkedin-clone/";
     },
   });
 }
@@ -40,7 +40,7 @@ export function useSignUp() {
     onError: (error) => console.log(error),
     onSuccess: ({ jwt }) => {
       storeUser(jwt, false);
-      location.pathname = "/";
+      location.pathname = "/linkedin-clone/";
     },
   });
 }

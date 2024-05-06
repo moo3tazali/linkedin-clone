@@ -16,7 +16,7 @@ export const handleUserDataApi = createAsyncThunk("userDataApi", async () => {
   const name = response.data.fullName || response.data.username;
   const userName = response.data.username;
   const title = response.data.title || "";
-  const avatar = response.data.profilePic?.url || "/static/images/avatar/1.jpg";
+  const avatar = response.data.profilePic?.url || "";
   const cover =
     response.data.coverPic?.url ||
     "https://res.cloudinary.com/dlpkoketm/image/upload/v1711390852/Screenshot_2024_03_25_201913_1babd8460d.png";

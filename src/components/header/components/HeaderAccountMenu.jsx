@@ -1,6 +1,6 @@
 import { useSelector } from "react-redux";
 
-import ProfileCard from "../../../components/cards/ProfileCard";
+import ProfileCard from "../../cards/ProfileCard";
 import {
   Avatar,
   Menu,

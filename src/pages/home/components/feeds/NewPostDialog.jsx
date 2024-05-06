@@ -37,6 +37,7 @@ export default function NewPostDialog() {
     setOpen(false);
     setSelectedFile([]);
     setPostContent("");
+    setInputDirection("ltr");
   }
 
   // HANDLE ON CHANGE FOR FILE INPUT
@@ -166,8 +167,10 @@ export default function NewPostDialog() {
               onClick={handlePostClicked}
               className="font-semibold bg-primary text-white px-4 py-1 rounded-full disabled:bg-gray-200 disabled:text-gray-400 disabled:cursor-not-allowed"
               disabled={
-                postContent.length > 5 ||
-                (selectedFile.length != 0 && selectedFile.length <= 4)
+                (!isPending && postContent.length > 5) ||
+                (!isPending &&
+                  selectedFile.length != 0 &&
+                  selectedFile.length <= 4)
                   ? false
                   : true
               }

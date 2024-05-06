@@ -15,7 +15,7 @@ const PostIMGs = ({ imageUrl, mediaLength }) => {
         src={imageUrl}
         alt="Click to open"
         onClick={openImage}
-        className={`max-w-full w-full max-h-[500px] cursor-pointer object-cover ${
+        className={`max-w-full max-h-[500px] w-full cursor-pointer object-cover ${
           mediaLength > 1 ? "col-span-6" : "col-span-12"
         }`}
       />

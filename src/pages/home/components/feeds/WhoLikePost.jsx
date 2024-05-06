@@ -14,7 +14,7 @@ const WhoLikePost = ({ like, error }) => {
     >
       <Avatar
         alt={user.username}
-        src={user.profilePic?.url || "/static/images/avatar/1.jpg"}
+        src={user.profilePic?.url || ""}
         sx={{ width: 48, height: 48 }}
         className="outline outline-white"
       />

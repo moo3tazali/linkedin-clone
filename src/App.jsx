@@ -1,11 +1,11 @@
 import "./App.css";
-import Header from "./layouts/header/Header";
+import Layout from "./layouts/Layout";
 import AppRoutes from "./routes/AppRoutes";
 
 function App() {
   return (
     <>
-      <Header />
+      <Layout />
       <AppRoutes />
     </>
   );

@@ -43,11 +43,7 @@ const Posts = ({ post }) => {
             <Link to={`in/${creator.username}`}>
               <Avatar
                 alt={creator.username}
-                src={
-                  creator.profilePic
-                    ? creator.profilePic.url
-                    : "/static/images/avatar/1.jpg"
-                }
+                src={creator.profilePic ? creator.profilePic?.url : ""}
                 sx={{ width: 48, height: 48 }}
                 className="outline outline-white"
               />

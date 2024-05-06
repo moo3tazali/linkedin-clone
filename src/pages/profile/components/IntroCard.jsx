@@ -6,6 +6,7 @@ import UpdateCoverPic from "./UpdateCoverPic";
 import UpdateProfilePic from "./UpdateProfilePic";
 import { useProfile } from "../../../hooks/queries";
 import EditIntro from "./EditIntro";
+import { Avatar } from "@mui/material";
 
 const IntroCard = () => {
   const { userId } = useSelector((state) => state.userData);
@@ -40,13 +41,24 @@ const IntroCard = () => {
               </div>
               <div className="flex justify-between">
                 <div className="px-5 pb-5 w-fit">
-                  <UpdateProfilePic
-                    currentProfile={{
-                      avatar:
-                        user.profilePic?.url || "/static/images/avatar/1.jpg",
-                      userName: user.username,
-                    }}
-                  />
+                  {user.id === userId ? (
+                    <UpdateProfilePic
+                      currentProfile={{
+                        avatar: user.profilePic?.url || "",
+                        userName: user.username,
+                      }}
+                    />
+                  ) : (
+                    <div className="flex justify-start -mt-[60px]">
+                      <Avatar
+                        alt={user.username}
+                        src={user.profilePic?.url || ""}
+                        sx={{ width: 120, height: 120 }}
+                        className="outline outline-white"
+                      />
+                    </div>
+                  )}
+
                   <h1 className="font-semibold mt-3 text-2xl">
                     {user.fullName || user.username}
                   </h1>

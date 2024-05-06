@@ -81,10 +81,7 @@ const Comments = ({ postId }) => {
                   <Link to={`/in/${comment.user.username}`}>
                     <Avatar
                       alt={comment.user.username}
-                      src={
-                        comment.user.profilePic?.url ||
-                        "/static/images/avatar/1.jpg"
-                      }
+                      src={comment.user.profilePic?.url || ""}
                       sx={{ width: 40, height: 40 }}
                       className="outline outline-white"
                     />

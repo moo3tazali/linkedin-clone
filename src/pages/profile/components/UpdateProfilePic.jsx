@@ -89,9 +89,7 @@ const UpdateProfilePic = ({ currentProfile }) => {
 
         <div className="flex items-center justify-between p-3 font-semibold bg-[#1B1F23] ">
           <button
-            disabled={
-              currentProfile.avatar === "/static/images/avatar/1.jpg" && true
-            }
+            disabled={currentProfile.avatar === "" && true}
             onClick={handleDeleteProfilePic}
             className="text-white transition-all hover:text-white/80 hover:bg-background/20 py-1 px-2 rounded disabled:cursor-not-allowed disabled:text-white/50 disabled:hover:bg-transparent disabled:hover:text-white/50"
           >

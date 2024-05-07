@@ -10,6 +10,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 const SignUpSchema = z.object({
   username: z
     .string()
+    .transform((val) => val.replaceAll(" ", ""))
     .min(6, { message: "Username must contain at least 6 character(s)" }),
   email: z.string().email(),
   password: z

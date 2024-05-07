@@ -27,8 +27,9 @@ const SignUp = () => {
   } = useForm({ resolver: zodResolver(SignUpSchema), mode: "onChange" });
 
   const onSubmit = async (data) => {
+    const formData = { ...data, username: data.username.replaceAll(" ", "") };
     try {
-      await signUpMutate(data);
+      await signUpMutate(formData);
     } catch (error) {
       setError("root", { message: error.response.data.error.message });
     }

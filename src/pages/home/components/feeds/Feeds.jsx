@@ -1,10 +1,10 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable react/jsx-key */
-import { Fragment, useEffect } from "react";
-import { useInView } from "react-intersection-observer";
-import Posts from "./Posts";
-import PostIsLoading from "../../../../components/loaders/PostIsLoading";
-import { usePosts } from "../../../../hooks/queries";
+import { Fragment, useEffect } from 'react';
+import { useInView } from 'react-intersection-observer';
+import Posts from './Posts';
+import PostIsLoading from '../../../../components/loaders/PostIsLoading';
+import { usePosts } from '../../../../hooks/queries';
 
 const Feeds = () => {
   const {
@@ -46,15 +46,15 @@ const Feeds = () => {
         {isFetchingNextPage ? (
           <PostIsLoading />
         ) : hasNextPage ? (
-          <span className="block w-10/12 text-center border mt-2 border-linkedBlack mx-auto rounded-full font-semibold text-lg">
+          <span className='block w-10/12 text-center border mt-2 border-linkedBlack mx-auto rounded-full font-semibold text-lg'>
             Load More 👌
           </span>
         ) : isError ? (
-          <span className="block w-10/12 text-center border mt-2 border-linkedBlack mx-auto rounded-full font-semibold text-lg">
+          <span className='block w-10/12 text-center border mt-2 border-linkedBlack mx-auto rounded-full font-semibold text-lg'>
             Server Error 🤷‍♂️
           </span>
         ) : (
-          <span className="block w-10/12 text-center border mt-2 border-linkedBlack mx-auto rounded-full font-semibold text-lg">
+          <span className='block w-10/12 text-center border mt-2 border-linkedBlack mx-auto rounded-full font-semibold text-lg'>
             No more Posts 🤷‍♂️
           </span>
         )}

@@ -1,15 +1,15 @@
-import { useState } from "react";
-import { CircularProgress, Dialog, EditIcon } from "../../../imports/import";
-import { useForm } from "react-hook-form";
-import { useUpdateIntroInfo } from "../../../hooks/queries";
-import { useDispatch, useSelector } from "react-redux";
-import { handleUserDataApi } from "../../../services/store/features/userDataSlice";
+import { useState } from 'react';
+import { CircularProgress, Dialog, EditIcon } from '../../../imports/import';
+import { useForm } from 'react-hook-form';
+import { useUpdateMyInfo } from '../../../hooks/queries';
+import { useDispatch, useSelector } from 'react-redux';
+import { handleUserDataApi } from '../../../services/store/features/userDataSlice';
 
-const EditIntro = () => {
+const EditIntro = ({ user }) => {
   const [open, setOpen] = useState(false);
   const dispatch = useDispatch();
-  const { name: fullName, title } = useSelector((state) => state.userData);
-  const { isPending, mutateAsync: updateIntroMutate } = useUpdateIntroInfo();
+  const { isPending, mutateAsync: updateMyInfo } = useUpdateMyInfo();
+  const { fullname, title } = user;
 
   const {
     register,
@@ -17,33 +17,37 @@ const EditIntro = () => {
     formState: { errors },
   } = useForm({
     defaultValues: {
-      title: title || "",
-      firstName: fullName && fullName.split(" ").shift(),
+      title: title || '',
+      firstName: fullname && fullname.split(' ').shift(),
       lastName:
-        fullName &&
-        fullName
-          .split(" ")
+        fullname &&
+        fullname
+          .split(' ')
           .filter((_, i) => i !== 0)
-          .join(" "),
+          .join(' '),
     },
-    mode: "onChange",
+    mode: 'onChange',
   });
 
   function capitalizeInputs(str) {
     return str
-      .split(" ")
+      .split(' ')
       .map((e) => e.charAt(0).toUpperCase() + e.slice(1))
-      .join(" ");
+      .join(' ');
   }
 
   const onSubmit = async ({ firstName, lastName, title }) => {
     const newData = {
-      fullName: `${capitalizeInputs(firstName)} ${capitalizeInputs(lastName)}`,
+      fullname: `${capitalizeInputs(firstName)} ${capitalizeInputs(lastName)}`,
       title: capitalizeInputs(title),
     };
-    if (newData.fullName === fullName && newData.title === title)
-      return setOpen(false);
-    await updateIntroMutate(newData);
+
+    if (newData.fullname === fullname && newData.title === title) {
+      setOpen(false);
+      return;
+    }
+
+    await updateMyInfo(newData);
     setOpen(false);
     dispatch(handleUserDataApi());
   };
@@ -52,118 +56,118 @@ const EditIntro = () => {
       <button
         onClick={() => setOpen(true)}
         className={
-          "text-gray-800 mt-5 mr-5 shadow flex justify-center items-center right-5 bg-black/5 w-8 h-8 rounded-full"
+          'text-gray-800 mt-5 mr-5 shadow flex justify-center items-center right-5 bg-black/5 w-8 h-8 rounded-full'
         }
       >
-        <EditIcon fontSize="medium" />
+        <EditIcon fontSize='medium' />
       </button>
       <Dialog
         open={open}
         onClose={() => setOpen(false)}
         fullWidth={true}
-        maxWidth="md"
+        maxWidth='md'
       >
         <div className={`flex justify-between items-center px-6 py-3`}>
-          <div className="text-xl text-linkedBlack font-semibold">
+          <div className='text-xl text-linkedBlack font-semibold'>
             Edit Intro
           </div>
           <button
             onClick={() => setOpen(false)}
-            className="font-semibold transition duration-300 hover:bg-gray-200 text-gray-600 text-2xl rounded-full w-11 h-11 flex items-center justify-center"
+            className='font-semibold transition duration-300 hover:bg-gray-200 text-gray-600 text-2xl rounded-full w-11 h-11 flex items-center justify-center'
           >
             X
           </button>
         </div>
 
         <hr />
-        <div className="px-6">
-          <h1 className="text-2xl font-semibold my-2">Basic info</h1>
+        <div className='px-6'>
+          <h1 className='text-2xl font-semibold my-2'>Basic info</h1>
 
           <form onSubmit={handleSubmit(onSubmit)}>
-            <div className="mb-5">
+            <div className='mb-5'>
               <label
-                htmlFor="first-name"
-                className="text-sm tracking-tight text-secondary"
+                htmlFor='first-name'
+                className='text-sm tracking-tight text-secondary'
               >
                 First name
               </label>
               <input
-                {...register("firstName", {
+                {...register('firstName', {
                   pattern: {
                     value: /^[^\d]+$/,
-                    message: "Please enter only alphabetic characters",
+                    message: 'Please enter only alphabetic characters',
                   },
                 })}
-                id="first-name"
-                type="text"
-                className="w-full border border-black rounded-md py-1 px-2 text-black/80 hover:outline hover:outline-1"
+                id='first-name'
+                type='text'
+                className='w-full border border-black rounded-md py-1 px-2 text-black/80 hover:outline hover:outline-1'
               />
               {errors?.firstName && (
-                <div className="text-red-500 tracking-tighter font-semibold text-sm">
+                <div className='text-red-500 tracking-tighter font-semibold text-sm'>
                   {errors.firstName.message}
                 </div>
               )}
             </div>
-            <div className="mb-5">
+            <div className='mb-5'>
               <label
-                htmlFor="last-name"
-                className="text-sm tracking-tight text-secondary"
+                htmlFor='last-name'
+                className='text-sm tracking-tight text-secondary'
               >
                 Last name
               </label>
               <input
-                {...register("lastName", {
+                {...register('lastName', {
                   pattern: {
                     value: /^[^\d]+$/,
-                    message: "Please enter only alphabetic characters",
+                    message: 'Please enter only alphabetic characters',
                   },
                 })}
-                id="last-name"
-                type="text"
-                className="w-full border border-black rounded-md py-1 px-2 text-black/80 hover:outline hover:outline-1"
+                id='last-name'
+                type='text'
+                className='w-full border border-black rounded-md py-1 px-2 text-black/80 hover:outline hover:outline-1'
               />
               {errors?.lastName && (
-                <div className="text-red-500 tracking-tighter font-semibold text-sm">
+                <div className='text-red-500 tracking-tighter font-semibold text-sm'>
                   {errors.lastName.message}
                 </div>
               )}
             </div>
-            <div className="mb-5">
+            <div className='mb-5'>
               <label
-                htmlFor="title"
-                className="text-sm tracking-tight text-secondary"
+                htmlFor='title'
+                className='text-sm tracking-tight text-secondary'
               >
                 Title
               </label>
               <input
-                {...register("title", {
+                {...register('title', {
                   pattern: {
                     value: /^[^\d]+$/,
-                    message: "Please enter only alphabetic characters",
+                    message: 'Please enter only alphabetic characters',
                   },
                 })}
-                id="title"
-                type="text"
-                className="w-full border border-black rounded-md py-1 px-2 text-black/80 hover:outline hover:outline-1"
+                id='title'
+                type='text'
+                className='w-full border border-black rounded-md py-1 px-2 text-black/80 hover:outline hover:outline-1'
               />
               {errors?.title && (
-                <div className="text-red-500 tracking-tighter font-semibold text-sm">
+                <div className='text-red-500 tracking-tighter font-semibold text-sm'>
                   {errors.title.message}
                 </div>
               )}
             </div>
 
             <hr />
-            <div className="flex justify-end items-center gap-3 my-3">
+            <div className='flex justify-end items-center gap-3 my-3'>
               {isPending ? (
-                <CircularProgress sx={{ color: "primary" }} size={22} />
+                <CircularProgress sx={{ color: 'primary' }} size={22} />
               ) : (
-                ""
+                ''
               )}
               <button
                 disabled={isPending}
-                type="submit"
-                className="bg-primary text-white px-4 py-1 rounded-full disabled:bg-gray-200 disabled:text-gray-400 disabled:cursor-not-allowed transition-all hover:bg-blue-900"
+                type='submit'
+                className='bg-primary text-white px-4 py-1 rounded-full disabled:bg-gray-200 disabled:text-gray-400 disabled:cursor-not-allowed transition-all hover:bg-blue-900'
               >
                 Save
               </button>

@@ -1,31 +1,28 @@
-import { ThumbUpIcon, ThumbUpOffAltIcon } from "../../../../imports/import";
-import { PostsClasses } from "../../../../imports/styleClasses";
-import { useAddLike, useRemoveLike } from "../../../../hooks/queries";
+import { ThumbUpIcon, ThumbUpOffAltIcon } from '../../../../imports/import';
+import { PostsClasses } from '../../../../imports/styleClasses';
+import { useToggleLike } from '../../../../hooks/queries';
+import { useState } from 'react';
 
 const LikeBtn = ({ postId, isLiked }) => {
-  const { mutate: add, isPending: isPendingAdd } = useAddLike();
-  const { mutate: remove, isPending: isPendingRemove } = useRemoveLike();
+  const [like, setLike] = useState(isLiked);
+  const { mutate: toggle, isPending } = useToggleLike();
 
-  function handleLikeClicked(postId) {
-    if (!isLiked) {
-      add(postId);
-    }
-    if (isLiked) {
-      remove(postId);
-    }
+  function handleLikeClicked() {
+    setLike((like) => !like);
+    toggle(postId);
   }
 
   return (
     <>
       <button
-        disabled={isPendingAdd || isPendingRemove}
-        onClick={() => handleLikeClicked(postId)}
+        disabled={isPending}
+        onClick={handleLikeClicked}
         className={`${PostsClasses.button} ${
-          isLiked ? "text-primary" : "text-secondary"
+          like ? 'text-primary' : 'text-secondary'
         }`}
       >
-        {isLiked ? <ThumbUpIcon /> : <ThumbUpOffAltIcon />}
-        <span className="ss:block hidden">Like</span>
+        {like ? <ThumbUpIcon /> : <ThumbUpOffAltIcon />}
+        <span className='ss:block hidden'>Like</span>
       </button>
     </>
   );

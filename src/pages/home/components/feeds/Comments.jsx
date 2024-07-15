@@ -1,21 +1,21 @@
-import { Fragment, useState } from "react";
-import { useForm } from "react-hook-form";
-import { useSelector } from "react-redux";
-import { Link } from "react-router-dom";
+import { Fragment, useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { useSelector } from 'react-redux';
+import { Link } from 'react-router-dom';
 import {
   Avatar,
   CircularProgress,
   CloseIcon,
   IconButton,
-} from "../../../../imports/import";
-import ProfileCard from "../../../../components/cards/ProfileCard";
-import { shortMomentFromX } from "../../../../utils/momentFromX";
+} from '../../../../imports/import';
+import ProfileCard from '../../../../components/cards/ProfileCard';
+import { shortMomentFromX } from '../../../../utils/momentFromX';
 import {
   useComments,
   useCreateComment,
   useDeleteComment,
-} from "../../../../hooks/queries";
-import { checkInputDirection } from "../../../../utils/checkInputDirection";
+} from '../../../../hooks/queries';
+import { checkInputDirection } from '../../../../utils/checkInputDirection';
 
 const Comments = ({ postId }) => {
   const [expanded, setExpanded] = useState(false);
@@ -28,113 +28,122 @@ const Comments = ({ postId }) => {
     fetchNextPage,
     hasNextPage,
   } = useComments(postId);
-  const { isPending, mutateAsync: createMutate } = useCreateComment();
-  const { mutate: deleteMutate } = useDeleteComment();
+  const { isPending, mutateAsync: createMutate } = useCreateComment(postId);
+  const { mutate: deleteMutate, isPending: isDeleting } = useDeleteComment();
   const { userId } = useSelector((state) => state.userData);
   // HANDLERS
   const handleAddComment = async (data) => {
-    const commentDataToPost = { ...data, postId };
-    await createMutate(commentDataToPost);
+    await createMutate(data);
     reset();
   };
 
   const handleDeleteComment = async (commentID) => {
     deleteMutate(commentID);
   };
+
   return (
-    <div className="px-4 py-4">
+    <div className='px-4 py-4'>
       {/* COMMENT FORM */}
-      <div className="flex items-start">
+      <div className='flex items-start'>
         <ProfileCard avatarWidth={40} />
-        <form onSubmit={handleSubmit(handleAddComment)} className="flex-1">
+        <form onSubmit={handleSubmit(handleAddComment)} className='flex-1'>
           <input
-            {...register("text")}
-            type="text"
-            placeholder="Add a comment..."
-            className="w-full rounded-full px-4 py-2 border outline-gray-400"
+            {...register('text')}
+            type='text'
+            placeholder='Add a comment...'
+            className='w-full rounded-full px-4 py-2 border outline-gray-400'
           />
           <button
-            type="submit"
+            type='submit'
             className={`flex items-center justify-center font-semibold bg-primary text-white px-3 py-[2px] rounded-full mt-3 ${
-              watch("text") || isPending ? "" : "hidden"
+              watch('text') || isPending ? '' : 'hidden'
             }`}
             disabled={isPending}
           >
             {isPending ? (
-              <CircularProgress size={24} sx={{ color: "white" }} />
+              <CircularProgress size={24} sx={{ color: 'white' }} />
             ) : (
-              "Post"
+              'Post'
             )}
           </button>
         </form>
       </div>
       {/* COMMENTS */}
       {isGetCommentsPending ? (
-        <div className="mt-6 flex items-start gap-2">Loading ... 😁</div>
+        <div className='mt-6 flex items-start gap-2'>Loading ... 😁</div>
       ) : isError ? (
-        <div className="mt-6 flex items-start gap-2">Server Error. 🤷‍♂️</div>
+        <div className='mt-6 flex items-start gap-2'>Server Error. 🤷‍♂️</div>
       ) : (
         comments?.pages.map((group, index) => (
           <Fragment key={index}>
             {group.map((comment) => (
-              <div key={comment.id} className="mt-6 flex items-start gap-2">
+              <div key={comment.id} className='mt-6 flex items-start gap-2'>
                 <div>
-                  <Link to={`/in/${comment.user.username}`}>
+                  <Link to={`/in/${comment.author.user.username}`}>
                     <Avatar
-                      alt={comment.user.username}
-                      src={comment.user.profilePic?.url || ""}
+                      alt={comment.author.user.username}
+                      src={comment.author.image || ''}
                       sx={{ width: 40, height: 40 }}
-                      className="outline outline-white"
+                      className='outline outline-white'
                     />
                   </Link>
                 </div>
 
-                <div className="flex-1 bg-background p-2 rounded-xl">
-                  <div className=" flex justify-between items-start ">
+                <div className='flex-1 bg-background p-2 rounded-xl'>
+                  <div className=' flex justify-between items-start '>
                     <div>
-                      <Link to={`/in/${comment.user.username}`}>
-                        <h4 className="font-semibold mt-3 hover:underline w-fit inline text-sm">
-                          {comment.user?.fullName || comment.user?.username}
+                      <Link to={`/in/${comment.author.user.username}`}>
+                        <h4 className='font-semibold mt-3 hover:underline w-fit inline text-sm'>
+                          {comment.author?.fullname ||
+                            comment.author.user?.username}
                         </h4>
                         <p className={`text-xs text-secondary`}>
-                          {comment.user?.title || ""}
+                          {comment.author?.title || ''}
                         </p>
                       </Link>
                     </div>
-                    <div className="text-secondary text-xs flex flex-col-reverse items-end justify-center gap-1">
+                    <div className='text-secondary text-xs flex flex-col-reverse items-end justify-center gap-1'>
                       <span>{shortMomentFromX(comment.updatedAt)}</span>
-                      {comment.user.id === userId && (
+                      {comment.authorId === userId && (
                         <IconButton
+                          disabled={isDeleting}
                           onClick={() => handleDeleteComment(comment.id)}
-                          id="demo-customized-button"
+                          id='demo-customized-button'
                           aria-controls={
-                            open ? "demo-customized-menu" : undefined
+                            open ? 'demo-customized-menu' : undefined
                           }
-                          aria-haspopup="true"
-                          aria-expanded={open ? "true" : undefined}
-                          sx={{ width: "18px", height: "18px" }}
+                          aria-haspopup='true'
+                          aria-expanded={open ? 'true' : undefined}
+                          sx={{ width: '18px', height: '18px' }}
                         >
-                          <CloseIcon
-                            sx={{ fontSize: "16px" }}
-                            className="text-secondary"
-                          />
+                          {isDeleting ? (
+                            <CircularProgress
+                              sx={{ color: 'primary' }}
+                              size={16}
+                            />
+                          ) : (
+                            <CloseIcon
+                              sx={{ fontSize: '16px' }}
+                              className='text-secondary'
+                            />
+                          )}
                         </IconButton>
                       )}
                     </div>
                   </div>
                   <p
                     dir={checkInputDirection(comment.text)}
-                    className="break-word text-linkedBlack my-2"
+                    className='break-word text-linkedBlack my-2'
                   >
                     {expanded ? comment.text : comment.text.substring(0, 150)}
                     {comment.text.length > 150 && (
                       <button
                         className={`px-2 pt-2 font-semibold text-sm text-secondary ${
-                          expanded ? "hidden" : ""
+                          expanded ? 'hidden' : ''
                         }`}
                         onClick={setExpanded((s) => !s)}
                       >
-                        {expanded ? "" : "...See more"}
+                        {expanded ? '' : '...See more'}
                       </button>
                     )}
                   </p>
@@ -147,13 +156,13 @@ const Comments = ({ postId }) => {
       <button
         onClick={fetchNextPage}
         disabled={isFetchingNextPage || !hasNextPage}
-        className="font-semibold w-fit px-2 mt-5 text-secondary rounded hover:text-linkedBlack hover:bg-background transition text-sm disabled:cursor-not-allowed disabled:hover:bg-white disabled:hover:text-secondary"
+        className='font-semibold w-fit px-2 mt-5 text-secondary rounded hover:text-linkedBlack hover:bg-background transition text-sm disabled:cursor-not-allowed disabled:hover:bg-white disabled:hover:text-secondary'
       >
         {isFetchingNextPage
-          ? "Loading..."
+          ? 'Loading...'
           : hasNextPage
-          ? "Load more comments"
-          : "No more comments"}
+          ? 'Load more comments'
+          : 'No more comments'}
       </button>
     </div>
   );

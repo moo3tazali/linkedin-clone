@@ -3,52 +3,49 @@ import {
   useMutation,
   useQuery,
   useQueryClient,
-} from "@tanstack/react-query";
-import {
-  addLike,
-  createComment,
-  createPost,
-  deleteComment,
-  deleteCover,
-  deletePost,
-  deleteProfilePic,
-  getComments,
-  getLikes,
-  getPosts,
-  getUsers,
-  login,
-  register,
-  removeLike,
-  updateMe,
-} from "../services/api";
-import { storeUser } from "../utils/handleAuth";
+} from '@tanstack/react-query';
+
+import useAxios from './useAxios';
+import { useAuth } from './AuthContext';
 
 // AUTHENTICATION QUERIES
 export function useLogin() {
+  const axios = useAxios();
+  const login = async (data) =>
+    (await axios.post('/auth/login', data, { withCredentials: true })).data;
+  const { storeToken } = useAuth();
+
   return useMutation({
     mutationFn: (data) => login(data),
     onError: (error) => console.log(error),
-    onSuccess: ({ jwt }, { isRemember }) => {
-      storeUser(jwt, isRemember);
-      location.pathname = "/linkedin-clone/";
+    onSuccess: ({ accessToken }) => {
+      storeToken(accessToken);
+      location.pathname = '/linkedin-clone/';
     },
   });
 }
 export function useSignUp() {
+  const axios = useAxios();
+  const register = async (data) =>
+    (await axios.post('/auth/register', data, { withCredentials: true })).data;
+  const { storeToken } = useAuth();
   return useMutation({
     mutationFn: (data) => register(data),
     onError: (error) => console.log(error),
-    onSuccess: ({ jwt }) => {
-      storeUser(jwt, false);
-      location.pathname = "/linkedin-clone/";
+    onSuccess: ({ accessToken }) => {
+      storeToken(accessToken);
+      location.pathname = '/linkedin-clone/';
     },
   });
 }
 
 // POST QUERIES
 export function usePosts() {
+  const axios = useAxios();
+  const getPosts = async (pageParam) =>
+    (await axios.get(`/posts?page=${pageParam + 1}`)).data.data;
   return useInfiniteQuery({
-    queryKey: ["posts"],
+    queryKey: ['posts'],
     queryFn: ({ pageParam }) => getPosts(pageParam),
     initialPageParam: 0,
     getNextPageParam: (lastPage, _, lastPageParam) => {
@@ -61,6 +58,8 @@ export function usePosts() {
 }
 
 export function useCreatePost() {
+  const axios = useAxios();
+  const createPost = async (data) => await axios.post('/posts', data);
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: (data) => createPost(data),
@@ -68,13 +67,15 @@ export function useCreatePost() {
       if (error) {
         console.log(error);
       } else {
-        await queryClient.invalidateQueries({ queryKey: ["posts"] });
+        await queryClient.invalidateQueries({ queryKey: ['posts'] });
       }
     },
   });
 }
 
 export function useDeletePost() {
+  const axios = useAxios();
+  const deletePost = async (id) => await axios.delete(`/posts/${id}`);
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: (id) => deletePost(id),
@@ -82,7 +83,7 @@ export function useDeletePost() {
       if (error) {
         console.log(error);
       } else {
-        await queryClient.invalidateQueries({ queryKey: ["posts"] });
+        await queryClient.invalidateQueries({ queryKey: ['posts'] });
       }
     },
   });
@@ -90,8 +91,12 @@ export function useDeletePost() {
 
 // COMMENT QUERIES
 export function useComments(postID) {
+  const axios = useAxios();
+  const getComments = async (postID, pageParam) =>
+    (await axios.get(`/posts/${postID}/comments?page=${pageParam + 1}`)).data
+      .data;
   return useInfiniteQuery({
-    queryKey: ["comments", { postID }],
+    queryKey: ['comments', { postID }],
     queryFn: ({ pageParam }) => getComments(postID, pageParam),
     initialPageParam: 0,
     getNextPageParam: (lastPage, _, lastPageParam) => {
@@ -101,22 +106,27 @@ export function useComments(postID) {
   });
 }
 
-export function useCreateComment() {
+export function useCreateComment(postId) {
+  const axios = useAxios();
+  const createComment = async (postID, data) =>
+    await axios.post(`/posts/${postID}/comments`, data);
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: (data) => createComment(data),
+    mutationFn: (data) => createComment(postId, data),
     onSettled: async (_, error) => {
       if (error) {
         console.log(error);
       } else {
-        await queryClient.invalidateQueries({ queryKey: ["posts"] });
-        await queryClient.invalidateQueries({ queryKey: ["comments"] });
+        await queryClient.invalidateQueries({ queryKey: ['posts'] });
+        await queryClient.invalidateQueries({ queryKey: ['comments'] });
       }
     },
   });
 }
 
 export function useDeleteComment() {
+  const axios = useAxios();
+  const deleteComment = async (id) => await axios.delete(`/comments/${id}`);
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: (id) => deleteComment(id),
@@ -124,8 +134,8 @@ export function useDeleteComment() {
       if (error) {
         console.log(error);
       } else {
-        await queryClient.invalidateQueries({ queryKey: ["posts"] });
-        await queryClient.invalidateQueries({ queryKey: ["comments"] });
+        await queryClient.invalidateQueries({ queryKey: ['posts'] });
+        await queryClient.invalidateQueries({ queryKey: ['comments'] });
       }
     },
   });
@@ -134,33 +144,26 @@ export function useDeleteComment() {
 // LIKES QUERIES
 
 export function useLikes(postID) {
+  const axios = useAxios();
+  const getLikes = async (postID) =>
+    (await axios.get(`/posts/${postID}/likes`)).data.data;
   return useQuery({
-    queryKey: ["likes", { postID }],
+    queryKey: ['likes', { postID }],
     queryFn: () => getLikes(postID),
   });
 }
-export function useAddLike() {
+export function useToggleLike() {
+  const axios = useAxios();
+  const toggleLike = async (postID) =>
+    await axios.post(`/posts/${postID}/likes`);
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: (postID) => addLike(postID),
+    mutationFn: (postID) => toggleLike(postID),
     onSettled: async (_, error) => {
       if (error) {
         console.log(error);
       } else {
-        await queryClient.invalidateQueries({ queryKey: ["posts"] });
-      }
-    },
-  });
-}
-export function useRemoveLike() {
-  const queryClient = useQueryClient();
-  return useMutation({
-    mutationFn: (postID) => removeLike(postID),
-    onSettled: async (_, error) => {
-      if (error) {
-        console.log(error);
-      } else {
-        await queryClient.invalidateQueries({ queryKey: ["posts"] });
+        await queryClient.invalidateQueries({ queryKey: ['posts'] });
       }
     },
   });
@@ -168,72 +171,71 @@ export function useRemoveLike() {
 
 //PROFILE QUERIES
 
-export function useProfile() {
+export function useProfile(username) {
+  const axios = useAxios();
+  const getProfile = async (username) =>
+    (await axios.get(`users/${username}`)).data.data;
   return useQuery({
-    queryKey: ["profile"],
-    queryFn: getUsers,
+    queryKey: ['profile'],
+    queryFn: () => getProfile(username),
   });
 }
 
-export function useUpdateCover() {
+export function useUsers() {
+  const axios = useAxios();
+  const getUsers = async () => (await axios.get('users?limit=3')).data.data;
+  return useQuery({
+    queryKey: ['users'],
+    queryFn: () => getUsers(),
+  });
+}
+
+export function useChangeMyAvatarOrCover() {
+  const axios = useAxios();
+  const changeMyAvatarOrCover = async (data) =>
+    await axios.put('users/me', data);
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: (data) => updateMe(data),
+    mutationFn: (data) => changeMyAvatarOrCover(data),
     onSettled: async (_, error) => {
       if (error) {
         console.log(error);
       } else {
-        await queryClient.invalidateQueries({ queryKey: ["profile"] });
+        await queryClient.invalidateQueries({ queryKey: ['profile'] });
       }
     },
   });
 }
 
-export function useDeleteCover() {
+export function useDeleteMyAvatarOrCover() {
+  const axios = useAxios();
+  const deleteMyAvatarOrCover = async (data) =>
+    await axios.delete('users/me', { data });
+
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: deleteCover,
+    mutationFn: (data) => deleteMyAvatarOrCover(data),
     onSettled: async (_, error) => {
       if (error) {
         console.log(error);
       } else {
-        await queryClient.invalidateQueries({ queryKey: ["profile"] });
+        await queryClient.invalidateQueries({ queryKey: ['profile'] });
       }
     },
   });
 }
 
-export function useUpdateProfilePic() {
+export function useUpdateMyInfo() {
+  const axios = useAxios();
+  const updateMyInfo = async (data) => await axios.patch('users/me', data);
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: (data) => updateMe(data),
-    onSettled: (_, error) => {
-      if (error) console.log(error);
-      queryClient.invalidateQueries("profile");
-    },
-  });
-}
-
-export function useDeleteProfilePic() {
-  const queryClient = useQueryClient();
-  return useMutation({
-    mutationFn: deleteProfilePic,
-    onSettled: (_, error) => {
-      if (error) console.log(error);
-      queryClient.invalidateQueries("profile");
-    },
-  });
-}
-
-export function useUpdateIntroInfo() {
-  const queryClient = useQueryClient();
-  return useMutation({
-    mutationFn: (data) => updateMe(data),
+    mutationFn: (data) => updateMyInfo(data),
     onSettled: async (_, error) => {
       if (error) {
         console.log(error);
       } else {
-        await queryClient.invalidateQueries({ queryKey: ["profile"] });
+        await queryClient.invalidateQueries({ queryKey: ['profile'] });
       }
     },
   });

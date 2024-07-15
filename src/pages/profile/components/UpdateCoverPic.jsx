@@ -1,27 +1,32 @@
-import { useRef, useState } from "react";
-import { useDispatch } from "react-redux";
+import { useRef, useState } from 'react';
+import { useDispatch } from 'react-redux';
 
-import { CircularProgress, Dialog, EditIcon } from "../../../imports/import";
-import { useDeleteCover, useUpdateCover } from "../../../hooks/queries";
-import { handleUserDataApi } from "../../../services/store/features/userDataSlice";
+import { CircularProgress, Dialog, EditIcon } from '../../../imports/import';
+import {
+  useChangeMyAvatarOrCover,
+  useDeleteMyAvatarOrCover,
+} from '../../../hooks/queries';
+import { handleUserDataApi } from '../../../services/store/features/userDataSlice';
 
 const UpdateCoverPic = ({ currentPic }) => {
   const [coverPic, setCoverPic] = useState(null);
   const [open, setOpen] = useState(false);
 
   const coverIconRef = useRef();
-  const { isPending, mutateAsync: updateMutate } = useUpdateCover();
-  const { mutateAsync: deleteMutate } = useDeleteCover();
+  const { isPending, mutateAsync: updateCover } = useChangeMyAvatarOrCover();
+  const { isPending: isDeleting, mutateAsync: deleteCover } =
+    useDeleteMyAvatarOrCover();
+
   const dispatch = useDispatch();
 
   const defaultCoverPic =
-    "https://res.cloudinary.com/dlpkoketm/image/upload/v1711390852/Screenshot_2024_03_25_201913_1babd8460d.png";
+    'https://res.cloudinary.com/dlpkoketm/image/upload/v1721035472/linkedin-clone/defaultCover_jwmslu.png';
 
   // UPDATE COVER PICTURE
   const handleUpdateCoverPic = async () => {
     const formData = new FormData();
-    formData.append("coverPic", coverPic);
-    await updateMutate(formData);
+    formData.append('cover', coverPic);
+    await updateCover(formData);
     setCoverPic(null);
     dispatch(handleUserDataApi());
     setOpen(false);
@@ -29,7 +34,7 @@ const UpdateCoverPic = ({ currentPic }) => {
 
   // DELETE COVER PICTURE
   const handleDeleteCoverPic = async () => {
-    await deleteMutate();
+    await deleteCover({ cover: true });
     setCoverPic(null);
     dispatch(handleUserDataApi());
     setOpen(false);
@@ -40,75 +45,75 @@ const UpdateCoverPic = ({ currentPic }) => {
       <button
         onClick={() => setOpen(true)}
         className={
-          "text-primary absolute top-5 shadow flex justify-center items-center right-5 bg-white w-7 h-7 rounded-full"
+          'text-primary absolute top-5 shadow flex justify-center items-center right-5 bg-white w-7 h-7 rounded-full'
         }
       >
-        <EditIcon fontSize="small" />
+        <EditIcon fontSize='small' />
       </button>
       <Dialog
         open={open}
         onClose={() => setOpen(false)}
         fullWidth={true}
-        maxWidth="md"
+        maxWidth='md'
       >
         <div className={`flex justify-between items-center p-4`}>
-          <div className="text-xl text-linkedBlack font-semibold">
+          <div className='text-xl text-linkedBlack font-semibold'>
             Background photo
           </div>
           <button
             onClick={() => setOpen(false)}
-            className="font-semibold transition duration-300 hover:bg-gray-200 text-gray-600 text-2xl rounded-full w-11 h-11 flex items-center justify-center"
+            className='font-semibold transition duration-300 hover:bg-gray-200 text-gray-600 text-2xl rounded-full w-11 h-11 flex items-center justify-center'
           >
             X
           </button>
         </div>
 
         <hr />
-        <div className="w-full bg-black min-h-[400px] my-5 flex items-center justify-center relative">
+        <div className='w-full bg-black min-h-[400px] my-5 flex items-center justify-center relative'>
           <input
-            type="file"
-            className="hidden"
-            accept="image/*"
+            type='file'
+            className='hidden'
+            accept='image/*'
             ref={coverIconRef}
             onChange={(e) => setCoverPic(e.target.files[0])}
           />
           <img
             src={coverPic ? URL.createObjectURL(coverPic) : currentPic}
-            alt="cover"
+            alt='cover'
             className={`${
-              isPending ? "opacity-20" : ""
+              isPending ? 'opacity-20' : ''
             } w-full object-cover max-h-[150px] sm:max-h-[200px]`}
           />
           {isPending ? (
             <CircularProgress
-              sx={{ color: "primary", position: "absolute" }}
+              sx={{ color: 'primary', position: 'absolute' }}
               size={50}
             />
           ) : (
-            ""
+            ''
           )}
         </div>
         <hr />
 
-        <div className="flex items-center justify-between p-3 font-semibold">
+        <div className='flex items-center justify-between p-3 font-semibold'>
           <button
             onClick={handleDeleteCoverPic}
-            className="text-secondary transition-all hover:text-linkedBlack hover:bg-background py-1 px-2 rounded disabled:cursor-not-allowed disabled:hover:bg-transparent disabled:hover:text-secondary"
-            disabled={currentPic === defaultCoverPic && true}
+            className='text-secondary transition-all hover:text-linkedBlack hover:bg-background py-1 px-2 rounded disabled:cursor-not-allowed disabled:hover:bg-transparent disabled:hover:text-secondary'
+            disabled={currentPic === defaultCoverPic || isDeleting}
           >
             Delete photo
           </button>
-          <div className="flex gap-3 items-center">
+          <div className='flex gap-3 items-center'>
             <button
               onClick={() => coverIconRef.current.click()}
-              className="text-primary border-2 border-primary/30 rounded-full px-4 py-1 transition-all hover:border-blue-900 hover:text-blue-900 hover:border-2"
+              className='text-primary border-2 border-primary/30 rounded-full px-4 py-1 transition-all hover:border-blue-900 hover:text-blue-900 hover:border-2'
             >
               Change photo
             </button>
             <button
               disabled={isPending}
               onClick={handleUpdateCoverPic}
-              className="bg-primary text-white px-4 py-1 rounded-full disabled:bg-gray-200 disabled:text-gray-400 disabled:cursor-not-allowed transition-all hover:bg-blue-900"
+              className='bg-primary text-white px-4 py-1 rounded-full disabled:bg-gray-200 disabled:text-gray-400 disabled:cursor-not-allowed transition-all hover:bg-blue-900'
             >
               Apply
             </button>

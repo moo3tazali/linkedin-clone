@@ -1,12 +1,12 @@
-import { useRef, useState } from "react";
-import { useDispatch } from "react-redux";
+import { useRef, useState } from 'react';
+import { useDispatch } from 'react-redux';
 
-import { handleUserDataApi } from "../../../services/store/features/userDataSlice";
-import { CircularProgress, Avatar, Dialog } from "../../../imports/import";
+import { handleUserDataApi } from '../../../services/store/features/userDataSlice';
+import { CircularProgress, Avatar, Dialog } from '../../../imports/import';
 import {
-  useDeleteProfilePic,
-  useUpdateProfilePic,
-} from "../../../hooks/queries";
+  useChangeMyAvatarOrCover,
+  useDeleteMyAvatarOrCover,
+} from '../../../hooks/queries';
 
 const UpdateProfilePic = ({ currentProfile }) => {
   const [profilePic, setProfilePic] = useState(null);
@@ -14,15 +14,15 @@ const UpdateProfilePic = ({ currentProfile }) => {
   const profileIconRef = useRef();
   const dispatch = useDispatch();
 
-  const { isPending, mutateAsync: updateProfilePicMutate } =
-    useUpdateProfilePic();
-  const { mutateAsync: deleteProfilePicMutate } = useDeleteProfilePic();
+  const { isPending, mutateAsync: updateAvatar } = useChangeMyAvatarOrCover();
+  const { isPending: isPendingDelete, mutateAsync: deleteAvatar } =
+    useDeleteMyAvatarOrCover();
 
   // UPDATE PROFILE PICTURE
   const handleUpdateProfilePic = async () => {
     const formData = new FormData();
-    formData.append("profilePic", profilePic);
-    await updateProfilePicMutate(formData);
+    formData.append('image', profilePic);
+    await updateAvatar(formData);
     setProfilePic(null);
     dispatch(handleUserDataApi());
 
@@ -31,47 +31,50 @@ const UpdateProfilePic = ({ currentProfile }) => {
 
   // DELETE PROFILE PICTURE
   const handleDeleteProfilePic = async () => {
-    await deleteProfilePicMutate();
+    await deleteAvatar({ image: true });
     setProfilePic(null);
     dispatch(handleUserDataApi());
 
     setOpen(false);
   };
 
+  const defaultAvatar =
+    'https://res.cloudinary.com/dlpkoketm/image/upload/v1721035472/linkedin-clone/avatar-default_xgonmt.jpg';
+
   return (
     <>
       <button
         onClick={() => setOpen(true)}
-        className="flex justify-start -mt-[60px]"
+        className='flex justify-start -mt-[60px]'
       >
         <Avatar
           alt={currentProfile.userName}
           src={currentProfile.avatar}
           sx={{ width: 120, height: 120 }}
-          className="outline outline-white"
+          className='outline outline-white'
         />
       </button>
       <Dialog
         open={open}
         onClose={() => setOpen(false)}
         fullWidth={true}
-        maxWidth="md"
+        maxWidth='md'
       >
         <div className={`flex justify-between items-center p-4 bg-[#1B1F23]`}>
-          <div className="text-xl font-semibold text-white">Profile photo</div>
+          <div className='text-xl font-semibold text-white'>Profile photo</div>
           <button
             onClick={() => setOpen(false)}
-            className="font-semibold transition duration-300 hover:bg-gray-200 text-gray-600 text-2xl rounded-full w-11 h-11 flex items-center justify-center"
+            className='font-semibold transition duration-300 hover:bg-gray-200 text-gray-600 text-2xl rounded-full w-11 h-11 flex items-center justify-center'
           >
             X
           </button>
         </div>
 
-        <div className="w-full bg-[#1B1F23] pb-10 pt-4 flex items-center justify-center relative">
+        <div className='w-full bg-[#1B1F23] pb-10 pt-4 flex items-center justify-center relative'>
           <input
-            type="file"
-            className="hidden"
-            accept="image/*"
+            type='file'
+            className='hidden'
+            accept='image/*'
             ref={profileIconRef}
             onChange={(e) => setProfilePic(e.target.files[0])}
           />
@@ -85,32 +88,35 @@ const UpdateProfilePic = ({ currentProfile }) => {
             sx={{ width: 280, height: 280 }}
           />
         </div>
-        <hr className="border-black/80" />
+        <hr className='border-black/80' />
 
-        <div className="flex items-center justify-between p-3 font-semibold bg-[#1B1F23] ">
+        <div className='flex items-center justify-between p-3 font-semibold bg-[#1B1F23] '>
           <button
-            disabled={currentProfile.avatar === "" && true}
+            disabled={
+              currentProfile.avatar === defaultAvatar || isPendingDelete
+            }
             onClick={handleDeleteProfilePic}
-            className="text-white transition-all hover:text-white/80 hover:bg-background/20 py-1 px-2 rounded disabled:cursor-not-allowed disabled:text-white/50 disabled:hover:bg-transparent disabled:hover:text-white/50"
+            className='text-white transition-all hover:text-white/80 hover:bg-background/20 py-1 px-2 rounded disabled:cursor-not-allowed disabled:text-white/50 disabled:hover:bg-transparent disabled:hover:text-white/50'
           >
             Delete photo
           </button>
-          <div className="flex gap-3 items-center">
-            {isPending ? (
-              <CircularProgress sx={{ color: "primary" }} size={30} />
+          <div className='flex gap-3 items-center'>
+            {isPending || isPendingDelete ? (
+              <CircularProgress sx={{ color: 'primary' }} size={30} />
             ) : (
-              ""
+              ''
             )}
             <button
+              disabled={isPending || isPendingDelete}
               onClick={() => profileIconRef.current.click()}
-              className="text-white border-2 border-white/30 rounded-full px-4 py-1 transition-all hover:border-white/50 hover:text-white-80 hover:border-2"
+              className='text-white border-2 border-white/30 rounded-full px-4 py-1 transition-all hover:border-white/50 hover:text-white-80 hover:border-2'
             >
               Change photo
             </button>
             <button
-              disabled={isPending}
+              disabled={isPending || isPendingDelete}
               onClick={handleUpdateProfilePic}
-              className="bg-primary text-white px-4 py-1 rounded-full disabled:bg-gray-200 disabled:text-gray-400 disabled:cursor-not-allowed transition-all hover:bg-primary/70"
+              className='bg-primary text-white px-4 py-1 rounded-full disabled:bg-gray-200 disabled:text-gray-400 disabled:cursor-not-allowed transition-all hover:bg-primary/70'
             >
               Apply
             </button>

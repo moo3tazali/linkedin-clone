@@ -20,7 +20,7 @@ export function useLogin() {
     onError: (error) => console.log(error),
     onSuccess: ({ accessToken }) => {
       storeToken(accessToken);
-      location.pathname = '/linkedin-clone/';
+      location.pathname = '/';
     },
   });
 }
@@ -34,7 +34,7 @@ export function useSignUp() {
     onError: (error) => console.log(error),
     onSuccess: ({ accessToken }) => {
       storeToken(accessToken);
-      location.pathname = '/linkedin-clone/';
+      location.pathname = '/';
     },
   });
 }

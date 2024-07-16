@@ -13,7 +13,7 @@ ReactDOM.createRoot(document.getElementById('root')).render(
   <AuthProvider>
     <Provider store={store}>
       <QueryClientProvider client={queryClient}>
-        <Router basename='/linkedin-clone/'>
+        <Router>
           <App />
         </Router>
       </QueryClientProvider>

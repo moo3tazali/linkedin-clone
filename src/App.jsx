@@ -7,7 +7,6 @@ import { useFetchUserData } from './hooks/useFetchUserData';
 import LoadingPage from './components/loaders/LoadingPage';
 
 function App() {
-  if (location.pathname === '/') location.pathname = '/linkedin-clone/';
   const { accessToken } = useAuth();
   const { isLoading } = useFetchUserData();
   return (
